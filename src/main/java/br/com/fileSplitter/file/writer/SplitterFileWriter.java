@@ -34,15 +34,11 @@ public class SplitterFileWriter {
 	public String writeAndSaveFile(File file, StringBuilder stringBuilder, Integer firstLine, Integer lastLine) throws FileWriterException {
 
 		// TODO possibilitar informar extensão desejada
+		final String errorMessage;
 		
-		if(stringBuilder==null)
-			throw new FileWriterException("StringBuilder cannot be null");
-		
-		if(firstLine == null | lastLine ==null)
-			throw new FileWriterException("First/Last line of file must be provided");
-		
-		if(file==null)
-			throw new FileWriterException("File cannot be null");
+		//TODO Melhorar validações
+		if((errorMessage= validateInputs(file, stringBuilder, firstLine, lastLine))!=null)
+			throw new FileWriterException(errorMessage);
 		
 		
 		try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))){
@@ -69,6 +65,22 @@ public class SplitterFileWriter {
 		}
 
 		return file;
+	}
+	
+	private String validateInputs(File file, StringBuilder stringBuilder, Integer firstLine, Integer lastLine) {
+		
+				
+		if(stringBuilder==null)
+			return "StringBuilder cannot be null";			
+		
+		if(firstLine == null | lastLine ==null)
+			return "First/Last line of file must be provided";			
+		
+		if(file==null)
+			return "File cannot be null";
+		
+		return null;
+				
 	}
 
 }

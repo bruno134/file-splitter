@@ -11,7 +11,7 @@ import java.io.IOException;
 import org.junit.jupiter.api.Test;
 
 class SplitterFileWriterTest {
-	
+
 	private static String TEST_FILE = "src/test/resources/out/MyTestFile.txt";
 
 	@Test
@@ -25,7 +25,7 @@ class SplitterFileWriterTest {
 
 		try {
 			file = splitterFileWriter.createFile(fileName);
-						
+
 			assertNotNull(file);
 			assertEquals(file.getPath(), fileName);
 		} catch (FileWriterException e) {
@@ -38,18 +38,16 @@ class SplitterFileWriterTest {
 	void shouldRaiseCustomErrorWhenFileNameIsNotProvided() {
 		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
 
-
 		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
 			File file = splitterFileWriter.createFile(null);
 		});
 
 		assertTrue(exception.getMessage().equals("A File must be provided"));
 	}
-	
+
 	@Test
 	void shouldRaiseCustomErrorWhenPathDoesNotExist() {
 		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
 
 		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
 			File file = splitterFileWriter.createFile("/nemTemessaPasta/teste.txt");

@@ -71,6 +71,8 @@ local.properties
 .worksheet
 
 target/
+src/main/out/
+src/test/resources/out/
 
 .project
 .classpath

@@ -50,22 +50,31 @@ public class SplitterFileWriter {
 		return file.getName();
 	}
 
-	public File createFile(String fileName) throws FileWriterException {
+	private File createFile(String fileName) throws FileWriterException {
 
 		File file = null;
-
+		
 		try {
-			file = new File(fileName);
-			file.createNewFile();
-
+			file = new File(fileName);	
+			File newDirectory = new File(file.getParent());
+			
+			//Try to create a folder if it doesn't exists
+			if(!newDirectory.exists()) {
+				
+				if(!newDirectory.mkdirs()) {
+					throw new FileWriterException("Could not create path or path invalid");
+				}
+				file.createNewFile();
+			}			
 		} catch (IOException e) {
-			throw new FileWriterException("File path not found or invalid");
+			throw new FileWriterException("Could not create path or path invalid");
 		} catch (NullPointerException e) {
-			throw new FileWriterException("A File must be provided");
+			throw new FileWriterException("A File or filename must be provided");
 		}
 
 		return file;
 	}
+	
 	
 	private String validateInputs(File file, StringBuilder stringBuilder, Integer firstLine, Integer lastLine) {
 		

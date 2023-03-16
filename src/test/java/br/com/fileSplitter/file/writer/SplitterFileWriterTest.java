@@ -1,88 +1,89 @@
 package br.com.fileSplitter.file.writer;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
 class SplitterFileWriterTest {
 
-	private static String TEST_FILE = "src/test/resources/out/MyTestFile.txt";
+	private final String fileName = "src/test/resources/out/MyTestFile.txt";	
+	private final File file = new File(fileName);
+	private final StringBuilder sb = new StringBuilder();
+	private final Integer firstPointer = 0;
+	private final Integer finalPointer = 1;
+	private final SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
+	
+	
+	
 
 	@Test
-	void shouldCreateFileWhenNameIsProvided() {
-
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
-		String fileName = TEST_FILE;
-
-		File file;
+	void shouldCreateFileWhenFileNameIsGiven() {
 
 		try {
-			file = splitterFileWriter.createFile(fileName);
+			String fileGenerated = splitterFileWriter.writeAndSaveFile(fileName,sb,firstPointer,finalPointer);
 
-			assertNotNull(file);
-			assertEquals(file.getPath(), fileName);
+			assertNotNull(fileGenerated);
+			assertFalse(fileGenerated.isEmpty());
+			assertEquals(fileGenerated, fileName.split("/")[4]);
+		} catch (FileWriterException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	@Test
+	void shouldCreateFileWhenFileNameIsNotGiven() {	
+		
+		try {
+			String fileGenerated = splitterFileWriter.writeAndSaveFile(sb,firstPointer,finalPointer);
+
+			assertNotNull(fileGenerated);
+			assertFalse(fileGenerated.isEmpty());			
+		} catch (FileWriterException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	@Test
+	void shouldCreateFileWhenFileIsGiven() {	
+		
+		try {
+			String fileGenerated = splitterFileWriter.writeAndSaveFile(file,sb,firstPointer,finalPointer);
+
+			assertNotNull(fileGenerated);
+			assertFalse(fileGenerated.isEmpty());			
 		} catch (FileWriterException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	@Test
-	void shouldRaiseCustomErrorWhenFileNameIsNotProvided() {
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
 
+	@Test
+	void shouldRaiseCustomErrorWhenFileNameIsEmpty() {
+		
 		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
-			File file = splitterFileWriter.createFile(null);
+			splitterFileWriter.writeAndSaveFile("",sb,firstPointer,finalPointer);
 		});
-
-		assertTrue(exception.getMessage().equals("A File must be provided"));
-	}
-
-	@Test
-	void shouldRaiseCustomErrorWhenPathDoesNotExist() {
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
-		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
-			File file = splitterFileWriter.createFile("/nemTemessaPasta/teste.txt");
-		});
-
-		assertTrue(exception.getMessage().equals("File path not found or invalid"));
-	}
-
-	@Test
-	void shouldCreateFileWhenFolderDoesNotExists() {
-
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
-		String fileName = TEST_FILE;
-
-		File file;
-		try {
-			file = splitterFileWriter.createFile(fileName);
-			assertNotNull(file);
-			assertEquals(file.getPath(), fileName);
-		} catch (FileWriterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		assertTrue(exception.getMessage().equals("A File or filename must be provided"));
 
 	}
+	
 
 	@Test
 	void shouldRaiseCustomErrorWhenStringBuilderIsNull() {
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
-		StringBuilder sb = null;
 
 		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
-			splitterFileWriter.writeAndSaveFile(sb, 0, 1);
+			splitterFileWriter.writeAndSaveFile(null, firstPointer, finalPointer);
 		});
 
 		assertTrue(exception.getMessage().equals("StringBuilder cannot be null"));
@@ -91,13 +92,9 @@ class SplitterFileWriterTest {
 
 	@Test
 	void shouldRaiseCustomErrorFileNotProvided() {
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
-		StringBuilder sb = new StringBuilder();
-		File file = null;
-
+		File nullFile = null;
 		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
-			splitterFileWriter.writeAndSaveFile(file, sb, 0, 1);
+			splitterFileWriter.writeAndSaveFile(nullFile, sb, firstPointer, finalPointer);
 		});
 
 		assertTrue(exception.getMessage().equals("File cannot be null"));
@@ -105,20 +102,10 @@ class SplitterFileWriterTest {
 
 	@Test
 	void shouldRaiseCustomErrorWhenFirstLineIsNull() {
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
-
-		StringBuilder sb = new StringBuilder();
+		
 
 		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
-			File file = null;
-
-			try {
-				file = splitterFileWriter.createFile(TEST_FILE);
-			} catch (FileWriterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			splitterFileWriter.writeAndSaveFile(file, sb, null, 1);
+			splitterFileWriter.writeAndSaveFile(file, sb, null, finalPointer);
 		});
 
 		assertTrue(exception.getMessage().equals("First/Last line of file must be provided"));
@@ -126,21 +113,10 @@ class SplitterFileWriterTest {
 
 	@Test
 	void shouldRaiseCustomErrorWhenLastLineIsNull() {
-		SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
+		
 
-		StringBuilder sb = new StringBuilder();
-
-		FileWriterException exception = assertThrows(FileWriterException.class, () -> {
-
-			File file = null;
-
-			try {
-				file = splitterFileWriter.createFile(TEST_FILE);
-			} catch (FileWriterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			splitterFileWriter.writeAndSaveFile(file, sb, 0, null);
+		FileWriterException exception = assertThrows(FileWriterException.class, () -> {		
+			splitterFileWriter.writeAndSaveFile(file, sb, firstPointer, null);
 		});
 
 		assertTrue(exception.getMessage().equals("First/Last line of file must be provided"));

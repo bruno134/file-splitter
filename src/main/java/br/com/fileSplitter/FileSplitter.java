@@ -10,16 +10,19 @@ public class FileSplitter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(FileSplitter.class);
 	
+	private static String originalFilename = "src/test/resources/XS-test-file-1000.txt";
+	private static String originalFilenameRestricted = "src/test/resources/test-file-restrict.txt";
+	
 	public static void main(String[] args) throws IOException {
 		
+		File file = new File(originalFilename);
+		File file2 = new File(originalFilenameRestricted);
 		
-		File file = new File("//Users/brunodn/novo/sugarbaby.txt");
 		
-		if(!file.exists()) {
-			File newDirectory = new File(file.getParent());
-			System.out.println("Criei - " + newDirectory.mkdirs());
-			//System.out.println(file.getParentFile());
-		}
+		
+		
+		System.out.println(file.canRead());
+		System.out.println(file2.canRead());
 		
 		//file.createNewFile();
 		

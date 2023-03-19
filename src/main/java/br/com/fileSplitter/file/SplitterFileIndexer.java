@@ -24,17 +24,7 @@ public class SplitterFileIndexer {
 
 	public Map<Integer, int[]> mapIndexes(File sourceFile) throws SplitterFileIndexerException, IOException {
 
-		if (sourceFile == null) {
-			throw new SplitterFileIndexerException("Source file can't be null");
-		}
-
-		if (!sourceFile.exists()) {
-			throw new FileNotFoundException(sourceFile.getAbsolutePath() + " was not found in the given path");
-		}
-
-		if (!sourceFile.canRead()) {
-			throw new FileNotFoundException("Permission denied to read " + sourceFile.getAbsolutePath());
-		}
+		fileValidate(sourceFile);
 		
 		Map<Integer, int[]> mapPointers = new HashMap<>();
 		int charPosition = 0;
@@ -67,8 +57,7 @@ public class SplitterFileIndexer {
 					indexes[1]=0;
 				}
 
-				charPosition += lineSize;
-				reader.seek(charPosition);
+				reader.seek(charPosition+=lineSize);
 				charReaded = (byte) reader.read();
 				linePosition++;
 
@@ -78,5 +67,20 @@ public class SplitterFileIndexer {
 
 		return mapPointers;
 	}
+	
+	private void fileValidate(File sourceFile) throws SplitterFileIndexerException, FileNotFoundException {
+		if (sourceFile == null) {
+			throw new SplitterFileIndexerException("Source file can't be null");
+		}
+
+		if (!sourceFile.exists()) {
+			throw new FileNotFoundException(sourceFile.getAbsolutePath() + " was not found in the given path");
+		}
+
+		if (!sourceFile.canRead()) {
+			throw new FileNotFoundException("Permission denied to read " + sourceFile.getAbsolutePath());
+		}
+	}
+	
 
 }

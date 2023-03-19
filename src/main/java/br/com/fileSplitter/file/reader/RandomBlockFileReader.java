@@ -9,7 +9,7 @@ public class RandomBlockFileReader {
 
 	private static final String READ = "r";
 
-	public StringBuffer readBlock(String originalFilename, Integer lineLength, Integer firstPointer,
+	public StringBuilder readBlock(String originalFilename, Integer lineLength, Integer firstPointer,
 			Integer lastPointer) throws IOException, RandomBlockFileReaderException {
 
 		if (originalFilename == null) {
@@ -22,7 +22,7 @@ public class RandomBlockFileReader {
 
 	}
 
-	public StringBuffer readBlock(File originalFile, Integer lineLength, Integer firstPointer, Integer lastPointer)
+	public StringBuilder readBlock(File originalFile, Integer lineLength, Integer firstPointer, Integer lastPointer)
 			throws IOException, RandomBlockFileReaderException {
 
 		if (originalFile == null) {
@@ -41,7 +41,7 @@ public class RandomBlockFileReader {
 			throw new RandomBlockFileReaderException("firstPointer|lastPointer|lineLength can't be null");
 		}
 
-		StringBuffer contentFile = new StringBuffer();
+		StringBuilder contentFile = new StringBuilder();
 
 		try (RandomAccessFile reader = new RandomAccessFile(originalFile, READ)) {
 

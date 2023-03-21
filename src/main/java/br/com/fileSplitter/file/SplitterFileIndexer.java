@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SplitterFileIndexer {
@@ -12,9 +14,9 @@ public class SplitterFileIndexer {
 	// TODO allow customize header and trailler mark
 	private static final String READ = "r";
 
-	public Map<Integer, int[]> mapIndexes(String sourceFileName) throws SplitterFileIndexerException, IOException {
+	public List<Index> mapIndexes(String sourceFileName) throws SplitterFileException {
 		if (sourceFileName == null) {
-			throw new SplitterFileIndexerException("Source file can't be null");
+			throw new SplitterFileException("Source file can't be null");
 		}
 
 		File sourceFile = new File(sourceFileName);
@@ -22,63 +24,75 @@ public class SplitterFileIndexer {
 		return mapIndexes(sourceFile);
 	}
 
-	public Map<Integer, int[]> mapIndexes(File sourceFile) throws SplitterFileIndexerException, IOException {
+	public List<Index> mapIndexes(File sourceFile) throws SplitterFileException {
 
 		fileValidate(sourceFile);
 		
-		Map<Integer, int[]> mapPointers = new HashMap<>();
-		int charPosition = 0;
-		int group = 1;
+		List<Index> indexes = new ArrayList<>();
+		int pointerPosition = 0;
 		int linePosition = 1;
 		byte charReaded = 0;
-		int[] indexes = new int[2];
+		int[] indexHeader   = new int[2];
+		int[] indexTrailler = new int[2];
 
 		try (RandomAccessFile reader = new RandomAccessFile(sourceFile, READ)) {
 
-			reader.seek(charPosition);
+			reader.seek(pointerPosition);
 			var firstLineAux = reader.readLine();
 			var lineSize = firstLineAux.length()+1;
 			charReaded = (byte) firstLineAux.charAt(0);
 
+			
+			
 			while (charReaded >= 0) {
 
 				if ((char) charReaded == '@') {
-					indexes[0] = linePosition;
+			//TODO improve the code
+					indexHeader[0] = linePosition;
+					indexHeader[1] = pointerPosition;
 					
 				} else if ((char) charReaded == '9') {			
-					indexes[1] = linePosition;
+					indexTrailler[0] = linePosition;
+					indexTrailler[1] = pointerPosition;
 				}
 				
-				if(indexes[0]>0&&indexes[1]>0) {
-					int[] pointerValues = {indexes[0],indexes[1]};
-					mapPointers.put(group, pointerValues);
-					group++;
-					indexes[0]=0;
-					indexes[1]=0;
+				if(indexHeader[0]>0&&indexTrailler[0]>0) {
+					
+					indexes.add(new Index(new Pointer(indexHeader[0], indexHeader[1]), 
+							    new Pointer(indexTrailler[0], indexTrailler[1])));
+					
+					indexHeader[0]  =0;
+					indexHeader[1]  =0;
+					indexTrailler[0]=0;
+					indexTrailler[1]=0;
 				}
 
-				reader.seek(charPosition+=lineSize);
+				reader.seek(pointerPosition+=lineSize);
 				charReaded = (byte) reader.read();
 				linePosition++;
 
 			}
 
+		} catch (FileNotFoundException e) {
+			throw new SplitterFileException(e.getMessage());
+		} catch (IOException e) {
+			throw new SplitterFileException(e.getMessage());
 		}
 
-		return mapPointers;
+		return indexes;
 	}
 	
-	private void fileValidate(File sourceFile) throws SplitterFileIndexerException, FileNotFoundException {
+	private void fileValidate(File sourceFile) throws SplitterFileException {
 		if (sourceFile == null) {
-			throw new SplitterFileIndexerException("Source file can't be null");
+			throw new SplitterFileException("Source file can't be null");
 		}
 
 		if (!sourceFile.exists()) {
-			throw new FileNotFoundException(sourceFile.getAbsolutePath() + " was not found in the given path");
+			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
 		}
 
 		if (!sourceFile.canRead()) {
-			throw new FileNotFoundException("Permission denied to read " + sourceFile.getAbsolutePath());
+			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
 		}
 	}
 	

@@ -5,60 +5,66 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class RandomBlockFileReader {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import br.com.fileSplitter.file.Index;
+import br.com.fileSplitter.file.SplitterFileConfiguration;
+import br.com.fileSplitter.file.SplitterFileException;
+
+public class RandomBlockFileReader implements SplitterReader{
 
 	private static final String READ = "r";
+	private static final Logger LOG = LoggerFactory.getLogger(RandomBlockFileReader.class);
+	
+	
+	@Override
+	public StringBuilder read(Index index, SplitterFileConfiguration configuration) throws SplitterFileException {
 
-	public StringBuilder readBlock(String originalFilename, Integer lineLength, Integer firstPointer,
-			Integer lastPointer) throws IOException, RandomBlockFileReaderException {
-
-		if (originalFilename == null) {
-			throw new RandomBlockFileReaderException("Original file can't be null");
-		}
-
-		File originalFile = new File(originalFilename);
-
-		return readBlock(originalFile, lineLength, firstPointer, lastPointer);
-
-	}
-
-	public StringBuilder readBlock(File originalFile, Integer lineLength, Integer firstPointer, Integer lastPointer)
-			throws IOException, RandomBlockFileReaderException {
-
-		if (originalFile == null) {
-			throw new RandomBlockFileReaderException("Original file can't be null");
+		if(configuration==null)
+			throw new SplitterFileException("Configuration not set");
+		
+		if("".equals(configuration.getSourceFile()))
+			throw new SplitterFileException("Source file name not set");
+		
+		File sourceFile = new File(configuration.getSourceFile());
+		
+		if (!sourceFile.exists()) {
+			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
 		}
 		
-		if (!originalFile.exists()) {
-			throw new FileNotFoundException(originalFile.getAbsolutePath() + " was not found in the given path");
+		if(!sourceFile.canRead()) {
+			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
 		}
 		
-		if(!originalFile.canRead()) {
-			throw new FileNotFoundException("Permission denied to read " + originalFile.getAbsolutePath());
-		}
+		if(index==null)
+			throw new SplitterFileException("Index was not provided");
 		
-		if(firstPointer==null | lastPointer==null | lineLength==null) {
-			throw new RandomBlockFileReaderException("firstPointer|lastPointer|lineLength can't be null");
-		}
-
 		StringBuilder contentFile = new StringBuilder();
 
-		try (RandomAccessFile reader = new RandomAccessFile(originalFile, READ)) {
-
-			int position = firstPointer * (lineLength + 1);
-			String contentOfLine = "";
-
-			for (int pointer = firstPointer; pointer <= lastPointer; pointer++) {
+		try (RandomAccessFile reader = new RandomAccessFile(sourceFile, READ)) {
+			
+			int position = index.getHeader().getPointerPosition();
+			String contentOfLine = "";			
+			
+			for (int pointer = index.getHeader().getLinePosition(); pointer <= index.getTrailler().getLinePosition(); pointer++) {
+				
 				reader.seek(position);
 				contentOfLine = reader.readLine();
 				contentFile.append(contentOfLine);
-				contentFile.append("\n");
-
+				contentFile.append("\n");				
+				
 				position += contentOfLine.length() + 1;
 			}
+			
+		} catch (FileNotFoundException e) {
+			throw new SplitterFileException(e.getMessage());
+		} catch (IOException e) {
+			throw new SplitterFileException(e.getMessage());
 		};
 
 		return contentFile;
+		
 	}
 
 }

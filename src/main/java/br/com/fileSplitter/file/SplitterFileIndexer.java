@@ -39,13 +39,21 @@ public class SplitterFileIndexer {
 
 			reader.seek(pointerPosition);
 			var firstLineAux = reader.readLine();
-			var lineSize = firstLineAux.length()+1;
+			var lineSize = firstLineAux.length()+0;
 			charReaded = (byte) firstLineAux.charAt(0);
 
 			
 			
 			while (charReaded >= 0) {
 
+				//In case of EOL is composed by CR+CF (windows)
+				if(charReaded==10||charReaded==13) {
+					pointerPosition++;
+					reader.seek(pointerPosition);
+					charReaded = (byte)reader.read();
+					continue;
+				}
+				
 				if ((char) charReaded == '@') {
 			//TODO improve the code
 					indexHeader[0] = linePosition;

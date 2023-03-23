@@ -17,7 +17,7 @@ class SplitterFileIndexerTest {
 	private String sourceFilenameNoHeader = "src/test/resources/XS-test-file-1000-no-header.txt";
 	private String sourceFilenameNoTrailler = "src/test/resources/XS-test-file-1000-no-trailler.txt";
 	private File sourceFile = new File(sourceFilename);
-	private SplitterFileIndexer indexer = new SplitterFileIndexer();
+	//private SplitterFileIndexer indexer = new SplitterFileIndexer();
 
 //	@Test
 //	void shouldFindAllIndexesInGivenFileName() throws SplitterFileIndexerException, IOException {

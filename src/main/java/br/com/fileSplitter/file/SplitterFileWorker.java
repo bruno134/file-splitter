@@ -1,12 +1,10 @@
 package br.com.fileSplitter.file;
 
-import java.io.File;
 import java.util.Queue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.fileSplitter.file.reader.RandomBlockFileReader;
 import br.com.fileSplitter.file.reader.SplitterReader;
 import br.com.fileSplitter.file.writer.SplitterWriter;
 
@@ -18,7 +16,6 @@ public class SplitterFileWorker implements Runnable {
 	private SplitterWriter splitterWriter;
 	private SplitterFileConfiguration configuration;
 	private Queue<Index> queue;
-	private File sourceFile;
 	private Integer retry = 5;
 	private Long sleepTime = 500L;
 
@@ -40,7 +37,6 @@ public class SplitterFileWorker implements Runnable {
 		this.splitterWriter = writer;
 		this.splitterReader = reader;
 		this.configuration = configuration;
-		this.sourceFile = new File(configuration.getSourceFile());
 		this.queue = (Queue<Index>) configuration.getQueue();
 		this.retry = configuration.getRetry() != null ?configuration.getRetry():this.retry;
 		this.sleepTime = configuration.getSleepTime() != null ?configuration.getSleepTime():this.sleepTime;
@@ -67,7 +63,7 @@ public class SplitterFileWorker implements Runnable {
 
 				StringBuilder fileInput;
 
-				fileInput = splitterReader.read(index, configuration);
+				fileInput = splitterReader.read(index, configuration.getSourceFile());
 
 				// TODO how to set source file name and destination file name
 				if (fileInput != null || fileInput.length() > 0) {

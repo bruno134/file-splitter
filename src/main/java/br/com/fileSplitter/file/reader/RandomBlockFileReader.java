@@ -19,22 +19,16 @@ public class RandomBlockFileReader implements SplitterReader{
 	
 	
 	@Override
-	public StringBuilder read(Index index, SplitterFileConfiguration configuration) throws SplitterFileException {
-
-		if(configuration==null)
-			throw new SplitterFileException("Configuration not set");
+	public StringBuilder read(Index index, String sourceFile) throws SplitterFileException {
 		
-		if("".equals(configuration.getSourceFile()))
-			throw new SplitterFileException("Source file name not set");
+		File file = new File(sourceFile);
 		
-		File sourceFile = new File(configuration.getSourceFile());
-		
-		if (!sourceFile.exists()) {
-			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
+		if (!file.exists()) {
+			throw new SplitterFileException(file.getAbsolutePath() + " was not found in the given path");
 		}
 		
-		if(!sourceFile.canRead()) {
-			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
+		if(!file.canRead()) {
+			throw new SplitterFileException("Permission denied to read " + file.getAbsolutePath());
 		}
 		
 		if(index==null)
@@ -42,7 +36,7 @@ public class RandomBlockFileReader implements SplitterReader{
 		
 		StringBuilder contentFile = new StringBuilder();
 
-		try (RandomAccessFile reader = new RandomAccessFile(sourceFile, READ)) {
+		try (RandomAccessFile reader = new RandomAccessFile(file, READ)) {
 			
 			int position = index.getHeader().getPointerPosition();
 			String contentOfLine = "";			

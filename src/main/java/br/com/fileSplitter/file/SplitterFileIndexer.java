@@ -13,72 +13,78 @@ public class SplitterFileIndexer {
 
 	// TODO allow customize header and trailler mark
 	private static final String READ = "r";
+	private final File sourceFile;
 
-	public List<Index> mapIndexes(String sourceFileName) throws SplitterFileException {
-		if (sourceFileName == null) {
-			throw new SplitterFileException("Source file can't be null");
-		}
+	public SplitterFileIndexer(File sourceFile) throws SplitterFileException {
 
-		File sourceFile = new File(sourceFileName);
+		FileUtils.fileValidate(sourceFile);
 
-		return mapIndexes(sourceFile);
+		this.sourceFile = sourceFile;
 	}
 
-	public List<Index> mapIndexes(File sourceFile) throws SplitterFileException {
+	public SplitterFileIndexer(String sourceFile) throws SplitterFileException {
 
-		fileValidate(sourceFile);
-		
+		this.sourceFile = FileUtils.createFile(sourceFile);
+	}
+
+	public List<Index> mapIndexes(Map<String, MarkerEnum> markers) throws SplitterFileException {
+
 		List<Index> indexes = new ArrayList<>();
 		int pointerPosition = 0;
-		int linePosition = 1;
-		byte charReaded = 0;
+		int linePosition	= 1;
+		int charReaded     = 0;
 		int[] indexHeader   = new int[2];
 		int[] indexTrailler = new int[2];
+		MarkerEnum pointerFound;
 
 		try (RandomAccessFile reader = new RandomAccessFile(sourceFile, READ)) {
 
 			reader.seek(pointerPosition);
 			var firstLineAux = reader.readLine();
-			var lineSize = firstLineAux.length()+0;
-			charReaded = (byte) firstLineAux.charAt(0);
 
-			
-			
+			/**
+			 * This is necessary to find out the type of End of line. An EOL can consist of
+			 * up to two char controls the possibilities are: windows => CR+LF UNIX => LF
+			 * Machintosh => CR
+			 */
+			reader.seek(firstLineAux.length());
+			var eolSize = reader.readLine().length() + 1;
+
+			// Then, we define the line size as quantity chars + eol chars + 1 to jump to
+			// the next line.
+			var lineSize = firstLineAux.length() + eolSize;
+			charReaded = firstLineAux.charAt(0);
+
 			while (charReaded >= 0) {
 
-				//In case of EOL is composed by CR+CF (windows)
-				if(charReaded==10||charReaded==13) {
-					pointerPosition++;
-					reader.seek(pointerPosition);
-					charReaded = (byte)reader.read();
-					continue;
-				}
-				
-				if ((char) charReaded == '@') {
-			//TODO improve the code
+				pointerFound = markers.getOrDefault(String.valueOf((char)charReaded), MarkerEnum.BODY);
+
+				switch (pointerFound) {
+				case HEADER:
 					indexHeader[0] = linePosition;
 					indexHeader[1] = pointerPosition;
-					
-				} else if ((char) charReaded == '9') {			
+					break;
+
+				case TRAILLER:
 					indexTrailler[0] = linePosition;
 					indexTrailler[1] = pointerPosition;
-				}
-				
-				if(indexHeader[0]>0&&indexTrailler[0]>0) {
-					
-					indexes.add(new Index(new Pointer(indexHeader[0], indexHeader[1]), 
-							    new Pointer(indexTrailler[0], indexTrailler[1])));
-					
-					indexHeader[0]  =0;
-					indexHeader[1]  =0;
-					indexTrailler[0]=0;
-					indexTrailler[1]=0;
+					break;
 				}
 
-				reader.seek(pointerPosition+=lineSize);
-				charReaded = (byte) reader.read();
+				if (indexHeader[0] > 0 && indexTrailler[0] > 0) {
+
+					indexes.add(new Index(new Pointer(indexHeader[0], indexHeader[1]),
+							new Pointer(indexTrailler[0], indexTrailler[1])));
+
+					indexHeader[0] = 0;
+					indexHeader[1] = 0;
+					indexTrailler[0] = 0;
+					indexTrailler[1] = 0;
+				}
+
+				reader.seek(pointerPosition += lineSize);
+				charReaded = reader.read();
 				linePosition++;
-
 			}
 
 		} catch (FileNotFoundException e) {
@@ -89,20 +95,5 @@ public class SplitterFileIndexer {
 
 		return indexes;
 	}
-	
-	private void fileValidate(File sourceFile) throws SplitterFileException {
-		if (sourceFile == null) {
-			throw new SplitterFileException("Source file can't be null");
-		}
-
-		if (!sourceFile.exists()) {
-			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
-		}
-
-		if (!sourceFile.canRead()) {
-			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
-		}
-	}
-	
 
 }

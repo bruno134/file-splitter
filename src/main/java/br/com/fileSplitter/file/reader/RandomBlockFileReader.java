@@ -9,26 +9,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import br.com.fileSplitter.file.Index;
-import br.com.fileSplitter.file.SplitterFileConfiguration;
 import br.com.fileSplitter.file.SplitterFileException;
 
 public class RandomBlockFileReader implements SplitterReader{
 
-	private static final String READ = "r";
-	private static final Logger LOG = LoggerFactory.getLogger(RandomBlockFileReader.class);
+	private static final String READ = "r";	
+	private final File sourceFile;
 	
 	
-	@Override
-	public StringBuilder read(Index index, String sourceFile) throws SplitterFileException {
-		
+	public RandomBlockFileReader(File sourceFile) {		
+		this.sourceFile = sourceFile;
+	}
+
+
+	public RandomBlockFileReader(String sourceFile) {	
 		File file = new File(sourceFile);
-		
-		if (!file.exists()) {
-			throw new SplitterFileException(file.getAbsolutePath() + " was not found in the given path");
+		this.sourceFile = file;
+	}
+
+
+	@Override
+	public StringBuilder read(Index index) throws SplitterFileException {
+				
+		if (!sourceFile.exists()) {
+			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
 		}
 		
-		if(!file.canRead()) {
-			throw new SplitterFileException("Permission denied to read " + file.getAbsolutePath());
+		if(!sourceFile.canRead()) {
+			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
 		}
 		
 		if(index==null)
@@ -36,7 +44,7 @@ public class RandomBlockFileReader implements SplitterReader{
 		
 		StringBuilder contentFile = new StringBuilder();
 
-		try (RandomAccessFile reader = new RandomAccessFile(file, READ)) {
+		try (RandomAccessFile reader = new RandomAccessFile(sourceFile, READ)) {
 			
 			int position = index.getHeader().getPointerPosition();
 			String contentOfLine = "";			

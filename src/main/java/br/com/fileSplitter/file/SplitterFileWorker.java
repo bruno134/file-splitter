@@ -14,33 +14,13 @@ public class SplitterFileWorker implements Runnable {
 
 	private SplitterReader splitterReader;
 	private SplitterWriter splitterWriter;
-	private SplitterFileConfiguration configuration;
 	private Queue<Index> queue;
-	private Integer retry = 5;
-	private Long sleepTime = 500L;
-
-	public SplitterFileWorker(SplitterFileConfiguration configuration, SplitterWriter writer, SplitterReader reader)
-			throws SplitterFileException {
-
-		if (configuration == null)
-			throw new SplitterFileException("Configuration not set");
-
-		if ("".equals(configuration.getSourceFile()))
-			throw new SplitterFileException("Source file name not set");
-
-		if (writer == null)
-			throw new SplitterFileException("Writer must be defined");
-
-		if (reader == null)
-			throw new SplitterFileException("Reader must be defined");
+	
+	public SplitterFileWorker(SplitterWriter writer, SplitterReader reader, Queue<Index> queue) {
 
 		this.splitterWriter = writer;
 		this.splitterReader = reader;
-		this.configuration = configuration;
-		this.queue = (Queue<Index>) configuration.getQueue();
-		this.retry = configuration.getRetry() != null ?configuration.getRetry():this.retry;
-		this.sleepTime = configuration.getSleepTime() != null ?configuration.getSleepTime():this.sleepTime;
-
+		this.queue = queue;
 	}
 
 	@Override
@@ -53,39 +33,46 @@ public class SplitterFileWorker implements Runnable {
 	}
 
 	public void readIndexesFromQueue() throws SplitterFileException {
+				
+		if (splitterWriter == null)
+			throw new SplitterFileException("Writer must be defined");
 
+		if (splitterReader == null)
+			throw new SplitterFileException("Reader must be defined");
+		
+		Long sleepTime = 500L;	
+		
 		Index index;
-		int retry = 0;
-
-		while ((index = queue.poll()) != null || retry <= this.retry) {
+		int qtyRetry = 0;
+		
+		while ((index = queue.poll()) != null || qtyRetry <= 10) {
 
 			if (index != null) {
 
 				StringBuilder fileInput;
+				
+				fileInput = splitterReader.read(index);
 
-				fileInput = splitterReader.read(index, configuration.getSourceFile());
-
-				// TODO how to set source file name and destination file name
-				if (fileInput != null || fileInput.length() > 0) {
-					splitterWriter.write(fileInput, configuration);
+				
+				if (fileInput != null | fileInput.length() > 0) {
+					splitterWriter.write(fileInput, index.getFileNumber());
 				}
+				
+				qtyRetry = 0;
 
 			} else {
 
-				LOG.info("Sleeping %d", sleepTime);
+//				LOG.info(String.format("Sleeping %d ms...", sleepTime));
 				try {
 					Thread.sleep(sleepTime);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+				} catch (InterruptedException e) {					
 					e.printStackTrace();
 				}
 
-				retry++;
+				qtyRetry++;
 			}
-
-			LOG.info("Terminating the pooling");
 		}
-
+		LOG.info("Terminating the pooling");
 	}
 
 }

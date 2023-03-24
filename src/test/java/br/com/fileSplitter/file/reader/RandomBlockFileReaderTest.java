@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 class RandomBlockFileReaderTest {
 
-	private RandomBlockFileReader reader = new RandomBlockFileReader();
+	private RandomBlockFileReader reader;
 	private String originalFilename = "src/test/resources/XS-test-file-1000.txt";
 	private String originalFilenameRestricted = "src/test/resources/test-file-restrict.txt";
 	private File originalFile = new File(originalFilename);

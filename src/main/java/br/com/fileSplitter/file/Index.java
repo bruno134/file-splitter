@@ -2,11 +2,12 @@ package br.com.fileSplitter.file;
 
 public class Index {
 
+	private final Integer fileNumber;
 	private final Pointer header;
 	private final Pointer trailler;
 	
-	public Index(Pointer header, Pointer trailler) {
-		
+	public Index(Integer fileNumber, Pointer header, Pointer trailler) {
+		this.fileNumber = fileNumber;
 		this.header = header;
 		this.trailler = trailler;
 	}
@@ -16,13 +17,16 @@ public class Index {
 	public Pointer getTrailler() {
 		return trailler;
 	}
-	
+	public Integer getFileNumber() {
+		return fileNumber;
+	}
 	
 	@Override
 	public String toString() {
-		return "Index [header=" + header + ", trailler=" + trailler + "]";
+		return "Index [fileNumber=" + fileNumber + ", header=" + header + ", trailler=" + trailler + "]";
 	}
 	
+
 	
 	
 }

@@ -31,7 +31,6 @@ public class FileUtils {
 				throw new SplitterFileException("A File or filename must be provided");
 			}
 						
-			
 			file = new File(fileName);	
 			
 			File newDirectory = new File(file.getParent());

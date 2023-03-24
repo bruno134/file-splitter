@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +29,7 @@ public class SplitterFileIndexer {
 	public List<Index> mapIndexes(Map<String, MarkerEnum> markers) throws SplitterFileException {
 
 		List<Index> indexes = new ArrayList<>();
+		int fileCount = 0;
 		int pointerPosition = 0;
 		int linePosition	= 1;
 		int charReaded     = 0;
@@ -72,8 +72,9 @@ public class SplitterFileIndexer {
 				}
 
 				if (indexHeader[0] > 0 && indexTrailler[0] > 0) {
-
-					indexes.add(new Index(new Pointer(indexHeader[0], indexHeader[1]),
+					fileCount++;
+					
+					indexes.add(new Index(fileCount, new Pointer(indexHeader[0], indexHeader[1]),
 							new Pointer(indexTrailler[0], indexTrailler[1])));
 
 					indexHeader[0] = 0;

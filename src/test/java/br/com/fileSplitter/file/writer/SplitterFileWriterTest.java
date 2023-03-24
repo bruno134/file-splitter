@@ -18,7 +18,7 @@ class SplitterFileWriterTest {
 	private final StringBuilder sb = new StringBuilder();
 	private final Integer firstPointer = 0;
 	private final Integer finalPointer = 1;
-	private final SplitterFileWriter splitterFileWriter = new SplitterFileWriter();
+	//private final SplitterFileWriter splitterFileWriter;
 	
 	
 	

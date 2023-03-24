@@ -4,15 +4,13 @@ package br.com.fileSplitter.file;
 
 public class FileConfiguration {
 	private String fileName;
-	private String fileExtension;
-	private String filePath;
+	private String fileExtension;	
 	private static final String DEFAULT_EXTENSION = ".txt";
 
 
 	private FileConfiguration(Builder builder) {
 		this.fileName = builder.fileName;
-		this.fileExtension = builder.fileExtension;
-		this.filePath = builder.filePath;
+		this.fileExtension = builder.fileExtension;		
 	}
 	
 	public String getFileName() {
@@ -20,13 +18,15 @@ public class FileConfiguration {
 	}
 	public String getFileExtension() {
 		
-		if("".equals(fileExtension) || fileExtension==null)
+		if("".equals(fileExtension) | fileExtension==null)
 			return DEFAULT_EXTENSION;
 		
 		return fileExtension;
 	}
-	public String getFilePath() {
-		return filePath;
+
+	
+	public String getFullFile() {
+		return fileName+getFileExtension();
 	}
 		
 	public static Builder builder() {
@@ -37,7 +37,7 @@ public class FileConfiguration {
 	public static final class Builder {
 		private String fileName;
 		private String fileExtension;
-		private String filePath;
+		
 
 		private Builder() {
 		}
@@ -49,11 +49,6 @@ public class FileConfiguration {
 
 		public Builder withFileExtension(String fileExtension) {
 			this.fileExtension = fileExtension;
-			return this;
-		}
-
-		public Builder withFilePath(String filePath) {
-			this.filePath = filePath;
 			return this;
 		}
 

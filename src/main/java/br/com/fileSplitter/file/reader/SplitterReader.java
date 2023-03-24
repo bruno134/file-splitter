@@ -6,6 +6,6 @@ import br.com.fileSplitter.file.SplitterFileException;
 public interface SplitterReader {
 	
 	
-	public StringBuilder read(Index index, String source) throws SplitterFileException;
+	public StringBuilder read(Index index) throws SplitterFileException;
 
 }

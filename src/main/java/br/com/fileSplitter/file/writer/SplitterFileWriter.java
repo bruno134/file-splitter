@@ -5,33 +5,27 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import br.com.fileSplitter.file.FileUtils;
-import br.com.fileSplitter.file.SplitterFileConfiguration;
 import br.com.fileSplitter.file.SplitterFileException;
 
 public class SplitterFileWriter implements SplitterWriter{
-
-	private final SplitterFileConfiguration configuration;
+	
+	private File targetFile;
 	
 	
-
-	public SplitterFileWriter(SplitterFileConfiguration configuration) {
+	public SplitterFileWriter(File targetFile) {
 		super();
-		this.configuration = configuration;
+		this.targetFile = targetFile;
 	}
 
-
 	@Override
-	public void write(StringBuilder input, Integer fileNumber) throws SplitterFileException {
+	public void write(StringBuilder input) throws SplitterFileException {
 
 		final String errorMessage;
 
-		if ((errorMessage = validateInputs(input, configuration)) != null)
+		if ((errorMessage = validateInputs(input, targetFile)) != null)
 			throw new SplitterFileException(errorMessage);
-
-		File file = createFile(configuration, fileNumber);
-
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+			
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile))) {
 			writer.write(input.toString());
 		} catch (IOException e) {
 			throw new SplitterFileException(e.getMessage());
@@ -39,26 +33,16 @@ public class SplitterFileWriter implements SplitterWriter{
 
 	}
 	
+	private String validateInputs(StringBuilder stringBuilder, File file) {
 
-	private File createFile(SplitterFileConfiguration configuration, Integer fileNumber) throws SplitterFileException {
-		
-		 return  FileUtils.createFile(configuration.getFileConfiguration().getFileName()+
-				 																	"_" +
-				 															  fileNumber+
-				                 configuration.getFileConfiguration().getFileExtension());
-
-	}
-
-	private String validateInputs(StringBuilder stringBuilder, SplitterFileConfiguration configuration) {
-
-		if (configuration == null)
-			return "Configuration not set";
+		if (targetFile == null | "".equals(targetFile))
+			return "Target File not provided";
 
 		if (stringBuilder == null)
 			return "StringBuilder cannot be null";
-
-		if (configuration.getFileConfiguration() == null)
-			return "File configuration not set";
+		
+		if(file == null)
+			return "File cannot be null";
 
 		return null;
 

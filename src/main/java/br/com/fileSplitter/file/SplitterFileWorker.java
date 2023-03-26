@@ -39,7 +39,7 @@ public class SplitterFileWorker implements Runnable {
 
 		if (fileInput != null | fileInput.length() > 0) {
 
-			splitterWriter.write(fileInput, index.getFileNumber());
+			splitterWriter.write(fileInput);
 
 		}
 

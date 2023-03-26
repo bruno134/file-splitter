@@ -26,6 +26,9 @@ import br.com.fileSplitter.file.writer.SplitterFileWriter;
 public class Splitter {
 
 	private static final Logger LOG = LoggerFactory.getLogger(Splitter.class);
+	private static final String DEFAULT_FILENAME = "splitted_file";
+	private static final String DEFAULT_FILE_EXTENSION = ".txt";
+	private static final Integer DEFAULT_THREAD_POOL = 1;
 	private SplitterFileConfiguration config;
 	
 	public Splitter(SplitterFileConfiguration config) {
@@ -33,7 +36,7 @@ public class Splitter {
 		this.config = config;
 	}
 	
-	public void splitAndWrite(String sourceFileName, String destinationFileName) throws SplitterFileException {
+	public void splitAndWrite(String sourceFileName, String targetFilePath) throws SplitterFileException {
 
 		Queue<Index> queue = new ConcurrentLinkedQueue<>();
 		List<Index> indexes = new ArrayList<Index>();
@@ -48,17 +51,19 @@ public class Splitter {
 			queue.add(index);
 		}
 				
-		LOG.info("File(s) will be saved in " + FileUtils.returnFilePath(destinationFileName));
+		LOG.info("File(s) will be saved in " + FileUtils.returnFilePath(targetFilePath));
 		
 		ExecutorService executor = getExecutorService();
 
-		if (config.getMonitor())
-			startMonitor(queue, executor);
+		startMonitor(queue, executor);
 
-		Index index;
+		Index index;		
 
 		while ((index = queue.poll()) != null) {
-			executor.execute(new SplitterFileWorker(new SplitterFileWriter(config),
+			
+			File writeFile = FileUtils.createFile(buildFilePathWithFileAndIndex(targetFilePath, index.getFileNumber()));
+			
+			executor.execute(new SplitterFileWorker(new SplitterFileWriter(writeFile),
 													new RandomBlockFileReader(sourceFile), index));
 		}
 	}
@@ -69,8 +74,24 @@ public class Splitter {
 	
 	private ExecutorService getExecutorService() {
 		
-		ExecutorService executor = new ThreadPoolExecutor(config.getThreadPool(), 50, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+		Integer threadPool = config.getThreadPool()!=null?config.getThreadPool():DEFAULT_THREAD_POOL;
+				
+		ExecutorService executor = new ThreadPoolExecutor(threadPool, 50, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
 		
 		return executor;
 	}
+	
+	private String buildFilePathWithFileAndIndex(String targetFilePath, Integer fileNumber) {
+		
+		String fileName = config.getOutputFileName()!=null?config.getOutputFileName():DEFAULT_FILENAME;
+		String extension = config.getOutputFileExtension()!=null?config.getOutputFileExtension():DEFAULT_FILE_EXTENSION;
+		String divisor = "";
+				
+		if(targetFilePath.charAt(targetFilePath.length()-1) != '/') {
+			divisor = "/";
+		}
+				
+		return  targetFilePath+divisor+fileName+"_"+fileNumber+extension;
+	}
+	
 }

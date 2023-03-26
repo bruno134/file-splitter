@@ -6,33 +6,35 @@ public class SplitterFileConfiguration {
 
 	private Map<String,MarkerEnum> markers;
 	private Integer threadPool;
-	private FileConfiguration fileConfiguration;
-	private boolean monitor;
+	private String outputFileName;
+	private String outputFileExtension;
 	
 	
 	private SplitterFileConfiguration(Builder builder) {
-		this.markers = builder.markers;
+		
 		this.threadPool = builder.threadPool;
-		this.fileConfiguration = builder.fileConfiguration;
-		this.monitor = builder.monitor;
+		this.outputFileName = builder.outputFileName;
+		this.outputFileExtension = builder.outputFileExtension;		
+		this.markers = builder.markers;
 	}
 	
+	
+	public String getOutputFileName() {
+		return outputFileName;
+	}
+
+	public String getOutputFileExtension() {
+		return outputFileExtension;
+	}
 	
 	public Map<String, MarkerEnum> getMarkers() {
 		return markers;
 	}
+	
+	public static Builder builder(Map<String,MarkerEnum> markers) {
+		return new Builder(markers);
+	}
 
-	public FileConfiguration getFileConfiguration() {
-		return fileConfiguration;
-	}
-	
-	public static Builder builder() {
-		return new Builder();
-	}
-	
-	public boolean getMonitor() {
-		return this.monitor;
-	}
 	
 	public Integer getThreadPool() {
 		return threadPool;
@@ -42,29 +44,26 @@ public class SplitterFileConfiguration {
 	public static final class Builder {
 		private Map<String,MarkerEnum> markers;
 		private Integer threadPool= 0;
-		private FileConfiguration fileConfiguration;
-		private boolean monitor = false;
+		private String outputFileName;
+		private String outputFileExtension;
 
-		private Builder() {
+
+		private Builder(Map<String,MarkerEnum> markers) {
+			this.markers = markers;
 		}
 
-		public Builder withFileConfiguration(FileConfiguration fileConfiguration) {
-			this.fileConfiguration = fileConfiguration;
+		public Builder withOutputFileName(String outputFileName) {
+			this.outputFileName = outputFileName;
 			return this;
 		}
-
-		public Builder withMarkers(Map<String,MarkerEnum> markers) {
-			this.markers = markers;
+		
+		public Builder withOutputFileExtension(String outputFileExtension) {
+			this.outputFileExtension = outputFileExtension;
 			return this;
 		}
 		
 		public Builder withThreadPool(Integer threadPool) {
 			this.threadPool = threadPool;
-			return this;
-		}
-		
-		public Builder withMonitor(boolean monitor) {
-			this.monitor = monitor;
 			return this;
 		}
 		

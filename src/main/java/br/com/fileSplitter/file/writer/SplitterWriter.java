@@ -5,5 +5,5 @@ import br.com.fileSplitter.file.SplitterFileException;
 public interface SplitterWriter {
 
 	
-	public void write(StringBuilder input, Integer orderNumber) throws SplitterFileException;
+	public void write(StringBuilder input) throws SplitterFileException;
 }

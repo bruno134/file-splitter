@@ -5,9 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import br.com.fileSplitter.file.Index;
 import br.com.fileSplitter.file.SplitterFileException;
 
@@ -16,7 +13,7 @@ public class RandomBlockFileReader implements SplitterReader{
 	private static final String READ = "r";	
 	private final File sourceFile;
 	
-	
+	//TODO esta com cara de que tenho race Condition aqui.
 	public RandomBlockFileReader(File sourceFile) {		
 		this.sourceFile = sourceFile;
 	}

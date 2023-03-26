@@ -7,12 +7,14 @@ public class SplitterFileConfiguration {
 	private Map<String,MarkerEnum> markers;
 	private Integer threadPool;
 	private FileConfiguration fileConfiguration;
+	private boolean monitor;
 	
 	
 	private SplitterFileConfiguration(Builder builder) {
 		this.markers = builder.markers;
 		this.threadPool = builder.threadPool;
 		this.fileConfiguration = builder.fileConfiguration;
+		this.monitor = builder.monitor;
 	}
 	
 	
@@ -28,6 +30,10 @@ public class SplitterFileConfiguration {
 		return new Builder();
 	}
 	
+	public boolean getMonitor() {
+		return this.monitor;
+	}
+	
 	public Integer getThreadPool() {
 		return threadPool;
 	}
@@ -37,6 +43,7 @@ public class SplitterFileConfiguration {
 		private Map<String,MarkerEnum> markers;
 		private Integer threadPool= 0;
 		private FileConfiguration fileConfiguration;
+		private boolean monitor = false;
 
 		private Builder() {
 		}
@@ -53,6 +60,11 @@ public class SplitterFileConfiguration {
 		
 		public Builder withThreadPool(Integer threadPool) {
 			this.threadPool = threadPool;
+			return this;
+		}
+		
+		public Builder withMonitor(boolean monitor) {
+			this.monitor = monitor;
 			return this;
 		}
 		

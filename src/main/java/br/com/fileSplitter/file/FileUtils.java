@@ -52,4 +52,12 @@ public class FileUtils {
 		return file;
 	}
 	
+
+	
+	public static String returnFilePath(String file) {		
+		return new File(file).getParent();
+	}
+	
+	
+	
 }

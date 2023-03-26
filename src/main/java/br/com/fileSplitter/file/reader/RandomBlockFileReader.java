@@ -5,8 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import br.com.fileSplitter.file.Index;
 import br.com.fileSplitter.file.SplitterFileException;
+import br.com.fileSplitter.file.model.Index;
 
 public class RandomBlockFileReader implements SplitterReader{
 

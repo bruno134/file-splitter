@@ -1,5 +1,6 @@
 package br.com.fileSplitter.file;
 
+import br.com.fileSplitter.file.model.Index;
 import br.com.fileSplitter.file.reader.SplitterReader;
 import br.com.fileSplitter.file.writer.SplitterWriter;
 

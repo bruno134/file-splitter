@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file;
+package br.com.fileSplitter.file.model;
 
 import java.util.Map;
 

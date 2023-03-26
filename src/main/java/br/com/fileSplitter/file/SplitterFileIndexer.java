@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import br.com.fileSplitter.file.model.Index;
+import br.com.fileSplitter.file.model.MarkerEnum;
+import br.com.fileSplitter.file.model.Pointer;
+import br.com.fileSplitter.file.util.FileUtils;
+
 public class SplitterFileIndexer {
 
 	// TODO allow customize header and trailler mark

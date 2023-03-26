@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.fileSplitter.file.model.Index;
+
 public class ProcessorMonitor implements Runnable {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ProcessorMonitor.class);

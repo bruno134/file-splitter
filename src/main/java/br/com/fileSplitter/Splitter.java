@@ -13,14 +13,14 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.fileSplitter.file.FileUtils;
-import br.com.fileSplitter.file.Index;
 import br.com.fileSplitter.file.ProcessorMonitor;
-import br.com.fileSplitter.file.SplitterFileConfiguration;
 import br.com.fileSplitter.file.SplitterFileException;
 import br.com.fileSplitter.file.SplitterFileIndexer;
 import br.com.fileSplitter.file.SplitterFileWorker;
+import br.com.fileSplitter.file.model.Index;
+import br.com.fileSplitter.file.model.SplitterFileConfiguration;
 import br.com.fileSplitter.file.reader.RandomBlockFileReader;
+import br.com.fileSplitter.file.util.FileUtils;
 import br.com.fileSplitter.file.writer.SplitterFileWriter;
 
 public class Splitter {

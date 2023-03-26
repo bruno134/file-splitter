@@ -38,5 +38,6 @@ new Splitter(config).splitAndWrite(sourceFilename, destinationPath);
 
 ## Configuration Class
 ``withMarkers(Map<String, MarkerEnum> markers)`` - Define what are the file markers that represents a unique file result.
-``withThreadPool(Integer threadPool)`` - Define how many threads are going to be started at the process
+
+ ``withThreadPool(Integer threadPool)`` - Define how many threads are going to be started at the process.
 ``withMonitor(boolean monitor)`` Enable a monitor that identifies when all the tasks are finished and terminates the main process

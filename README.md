@@ -21,13 +21,11 @@ markers.put("9", MarkerEnum.TRAILLER);
 
 ```java
 SplitterFileConfiguration config = SplitterFileConfiguration.builder()
-											.withMarkers(markers)
-											.withFileConfiguration(FileConfiguration.builder()
-													.withFileName(<your source file>)
-													.build())
-											.withThreadPool(5)
-											.withMonitor(true)
-											.build();
+				   .withMarkers(markers)
+				   .withFileConfiguration(FileConfiguration.builder()
+								.withFileName(<your source file>).build())
+								.withThreadPool(5)
+								.withMonitor(true).build();
 ```
 
 3 - And finally Instantiate a Splitter object and call the ``splitAndWrite`` method.

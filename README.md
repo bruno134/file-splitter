@@ -21,13 +21,11 @@ markers.put("9", MarkerEnum.TRAILLER);
 
 ```java
 SplitterFileConfiguration config = SplitterFileConfiguration.builder()
-											.withMarkers(markers)
-											.withFileConfiguration(FileConfiguration.builder()
-													.withFileName(<your source file>)
-													.build())
-											.withThreadPool(5)
-											.withMonitor(true)
-											.build();
+				   .withMarkers(markers)
+				   .withFileConfiguration(FileConfiguration.builder()
+								.withFileName(<your source file>).build())
+								.withThreadPool(5)
+								.withMonitor(true).build();
 ```
 
 3 - And finally Instantiate a Splitter object and call the ``splitAndWrite`` method.
@@ -38,6 +36,5 @@ new Splitter(config).splitAndWrite(sourceFilename, destinationPath);
 
 ## Configuration Class
 ``withMarkers(Map<String, MarkerEnum> markers)`` - Define what are the file markers that represents a unique file result.
-
- ``withThreadPool(Integer threadPool)`` - Define how many threads are going to be started at the process.
+``withThreadPool(Integer threadPool)`` - Define how many threads are going to be started at the process
 ``withMonitor(boolean monitor)`` Enable a monitor that identifies when all the tasks are finished and terminates the main process

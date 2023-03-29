@@ -13,21 +13,17 @@ public class RandomBlockFileReader implements SplitterReader{
 	private static final String READ = "r";	
 	private final File sourceFile;
 	
-	//TODO esta com cara de que tenho race Condition aqui.
 	public RandomBlockFileReader(File sourceFile) {		
 		this.sourceFile = sourceFile;
 	}
 
-
-	public RandomBlockFileReader(String sourceFile) {	
-		File file = new File(sourceFile);
-		this.sourceFile = file;
-	}
-
-
 	@Override
 	public StringBuilder read(Index index) throws SplitterFileException {
-				
+		
+		if (sourceFile==null) {
+			throw new SplitterFileException("Source file cannot be null");
+		}
+		
 		if (!sourceFile.exists()) {
 			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
 		}
@@ -56,11 +52,9 @@ public class RandomBlockFileReader implements SplitterReader{
 				position += contentOfLine.length() + 1;
 			}
 			
-		} catch (FileNotFoundException e) {
-			throw new SplitterFileException(e.getMessage());
 		} catch (IOException e) {
 			throw new SplitterFileException(e.getMessage());
-		};
+		}
 
 		return contentFile;
 		

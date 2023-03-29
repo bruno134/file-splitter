@@ -22,7 +22,7 @@ public class SplitterFileWriter implements SplitterWriter{
 
 		final String errorMessage;
 
-		if ((errorMessage = validateInputs(input, targetFile)) != null)
+		if ((errorMessage = validateInputs(input)) != null)
 			throw new SplitterFileException(errorMessage);
 			
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile))) {
@@ -33,16 +33,13 @@ public class SplitterFileWriter implements SplitterWriter{
 
 	}
 	
-	private String validateInputs(StringBuilder stringBuilder, File file) {
+	private String validateInputs(StringBuilder stringBuilder) {
 
-		if (targetFile == null | "".equals(targetFile))
+		if (targetFile == null)
 			return "Target File not provided";
 
 		if (stringBuilder == null)
 			return "StringBuilder cannot be null";
-		
-		if(file == null)
-			return "File cannot be null";
 
 		return null;
 

@@ -29,23 +29,28 @@ private final ExecutorService executor;
 	
 	private void queueMonitor(Queue<Index> queue) {
 		
+		
+		
+		
 		LOG.info("Monitor started...");
-		
-		while(queue.size()>0) {
-			
-			try {
+		try {
+			while (!queue.isEmpty()) {
 				Thread.sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			}			
+		} catch (NullPointerException | InterruptedException e) {
 			
+			shutdown(executor);
+			Thread.currentThread().interrupt();
 		}
-	
-		
 		//Once all itens of the queue are polled, we start the Executor shutdown and
 		// the awaitTermination to terminate only after all tasks are finished
 		
+		shutdown(executor);
+		
+		LOG.info("Monitor finished...");
+	}
+	
+	private void shutdown(ExecutorService executor) {
 		try {
 			executor.shutdown();
 			executor.awaitTermination(1, TimeUnit.MINUTES);
@@ -56,11 +61,9 @@ private final ExecutorService executor;
 			
 			LOG.info("All the tasks are finished!");
 			
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		} catch (NullPointerException |InterruptedException e) {
+			 Thread.currentThread().interrupt();
 		}
-		
-		LOG.info("Monitor finished...");
 	}
 
 }

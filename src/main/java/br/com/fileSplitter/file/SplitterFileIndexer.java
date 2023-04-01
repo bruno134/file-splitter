@@ -15,7 +15,6 @@ import br.com.fileSplitter.file.util.FileUtils;
 
 public class SplitterFileIndexer {
 
-	// TODO allow customize header and trailler mark
 	private static final String READ = "r";
 	private final File sourceFile;
 
@@ -33,6 +32,9 @@ public class SplitterFileIndexer {
 
 	public List<Index> mapIndexes(Map<String, MarkerEnum> markers) throws SplitterFileException {
 
+		if(markers==null)
+			throw new SplitterFileException("The markers should be provided");
+		
 		List<Index> indexes = new ArrayList<>();
 		int fileCount = 0;
 		int pointerPosition = 0;
@@ -74,6 +76,9 @@ public class SplitterFileIndexer {
 					indexTrailler[0] = linePosition;
 					indexTrailler[1] = pointerPosition;
 					break;
+					
+				default:
+					break;
 				}
 
 				if (indexHeader[0] > 0 && indexTrailler[0] > 0) {
@@ -93,11 +98,9 @@ public class SplitterFileIndexer {
 				linePosition++;
 			}
 
-		} catch (FileNotFoundException e) {
-			throw new SplitterFileException(e.getMessage());
 		} catch (IOException e) {
 			throw new SplitterFileException(e.getMessage());
-		}
+		} 
 
 		return indexes;
 	}

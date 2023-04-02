@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,6 +126,21 @@ class SplitterFileIndexerTest {
 	void shouldFindNoIndexWhenFileDoNotHaveTrailler() throws SplitterFileException {
 
 		SplitterFileIndexer indexer = new SplitterFileIndexer(sourceFilenameNoTrailler);
+
+		Map<String, MarkerEnum> markers = new HashMap<>();
+		markers.put("@", MarkerEnum.HEADER);
+		markers.put("9", MarkerEnum.TRAILLER);
+		
+		var ret = indexer.mapIndexes(markers);
+		
+		assertEquals(0, ret.size());
+
+	}
+	
+	@Test
+	void shouldFindNoIndexWhenFileDoNotHaveHeaderAndTrailler() throws SplitterFileException {
+
+		SplitterFileIndexer indexer = new SplitterFileIndexer(sourceFilenameNoHeaderTrailler);
 
 		Map<String, MarkerEnum> markers = new HashMap<>();
 		markers.put("@", MarkerEnum.HEADER);

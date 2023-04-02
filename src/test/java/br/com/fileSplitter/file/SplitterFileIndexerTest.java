@@ -1,6 +1,8 @@
 package br.com.fileSplitter.file;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,7 +13,9 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
+import br.com.fileSplitter.file.model.Index;
 import br.com.fileSplitter.file.model.MarkerEnum;
+import br.com.fileSplitter.file.model.Pointer;
 
 class SplitterFileIndexerTest {
 
@@ -193,6 +197,24 @@ class SplitterFileIndexerTest {
 		});
 
 		assertTrue(exception.getMessage().contains("Permission denied"));
+	}
+	
+	@Test
+	void shouldBringAllIndexValues() {		
+		Pointer pointer = new Pointer(0, 1);
+		
+		Index index = new Index(1,pointer,pointer);
+		
+		assertNotNull(index.toString());		
+		assertNotEquals("", index.toString());
+				
+	}
+	
+	@Test
+	void shouldBringAllPointersValues() {
+		Pointer pointer = new Pointer(0, 1);
+		assertNotNull(pointer.toString());		
+		assertNotEquals("", pointer.toString());
 	}
 
 }

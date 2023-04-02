@@ -38,7 +38,7 @@ public class SplitterFileWorker implements Runnable {
 
 		fileInput = splitterReader.read(index);
 
-		if (fileInput != null | fileInput.length() > 0) {
+		if (fileInput != null && fileInput.length() > 0) {
 
 			splitterWriter.write(fileInput);
 

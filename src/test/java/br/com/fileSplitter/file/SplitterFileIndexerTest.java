@@ -1,7 +1,6 @@
 package br.com.fileSplitter.file;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -106,7 +105,7 @@ class SplitterFileIndexerTest {
 		File file = new File("anything");
 		
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			SplitterFileIndexer indexer = new SplitterFileIndexer(file);	
+			new SplitterFileIndexer(file);	
 		});
 
 		assertNotNull(exception);
@@ -164,7 +163,7 @@ class SplitterFileIndexerTest {
 		File file = new File("");
 		
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			SplitterFileIndexer indexer = new SplitterFileIndexer(file);	
+			new SplitterFileIndexer(file);	
 		});
 
 		assertTrue(exception.getMessage().contains(" was not found in the given path"));

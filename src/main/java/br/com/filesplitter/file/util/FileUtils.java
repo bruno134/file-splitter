@@ -1,7 +1,9 @@
-package br.com.fileSplitter.file;
+package br.com.filesplitter.file.util;
 
 import java.io.File;
 import java.io.IOException;
+
+import br.com.filesplitter.file.SplitterFileException;
 
 public class FileUtils {
 

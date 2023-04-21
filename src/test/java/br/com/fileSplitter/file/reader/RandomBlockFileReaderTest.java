@@ -9,9 +9,10 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.fileSplitter.file.SplitterFileException;
-import br.com.fileSplitter.file.model.Index;
-import br.com.fileSplitter.file.model.Pointer;
+import br.com.filesplitter.file.SplitterFileException;
+import br.com.filesplitter.file.model.Index;
+import br.com.filesplitter.file.model.Pointer;
+import br.com.filesplitter.file.reader.RandomBlockFileReader;
 
 class RandomBlockFileReaderTest {
 

@@ -9,9 +9,10 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.fileSplitter.file.SplitterFileException;
-import br.com.fileSplitter.file.model.MarkerEnum;
-import br.com.fileSplitter.file.model.SplitterFileConfiguration;
+import br.com.filesplitter.Splitter;
+import br.com.filesplitter.file.SplitterFileException;
+import br.com.filesplitter.file.model.MarkerEnum;
+import br.com.filesplitter.file.model.SplitterFileConfiguration;
 
 class SplitterTest {
 

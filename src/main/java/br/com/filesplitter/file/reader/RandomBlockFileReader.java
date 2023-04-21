@@ -1,12 +1,12 @@
-package br.com.fileSplitter.file.reader;
+package br.com.filesplitter.file.reader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import br.com.fileSplitter.file.SplitterFileException;
-import br.com.fileSplitter.file.model.Index;
+import br.com.filesplitter.file.SplitterFileException;
+import br.com.filesplitter.file.model.Index;
 
 public class RandomBlockFileReader implements SplitterReader{
 

@@ -1,11 +1,11 @@
-	package br.com.fileSplitter.file.writer;
+	package br.com.filesplitter.file.writer;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import br.com.fileSplitter.file.SplitterFileException;
+import br.com.filesplitter.file.SplitterFileException;
 
 public class SplitterFileWriter implements SplitterWriter{
 	

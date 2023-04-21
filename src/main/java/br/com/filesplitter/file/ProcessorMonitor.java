@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file;
+package br.com.filesplitter.file;
 
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.fileSplitter.file.model.Index;
+import br.com.filesplitter.file.model.Index;
 
 public class ProcessorMonitor implements Runnable {
 

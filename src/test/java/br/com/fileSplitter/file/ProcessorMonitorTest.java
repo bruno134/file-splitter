@@ -10,7 +10,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.fileSplitter.file.model.Index;
+import br.com.filesplitter.file.ProcessorMonitor;
+import br.com.filesplitter.file.model.Index;
 
 class ProcessorMonitorTest {
 

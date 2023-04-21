@@ -39,19 +39,19 @@ public class Splitter {
 	public void splitAndWrite(String sourceFileName, String targetFilePath) throws SplitterFileException {
 
 		Queue<Index> queue = new ConcurrentLinkedQueue<>();
-		List<Index> indexes = new ArrayList<Index>();
+		List<Index> indexes;
 		File sourceFile = new File(sourceFileName);
 
 		LOG.info("Indexing file");
 		indexes = new SplitterFileIndexer(sourceFile).mapIndexes(config.getMarkers());
-
-		LOG.info(String.format("Founded %d indexes", indexes.size()));
-
+		
+		LOG.info("Founded {} indexes", indexes.size());
+		
 		for (Index index : indexes) {
 			queue.add(index);
 		}
 				
-		LOG.info("File(s) will be saved in " + FileUtils.returnFilePath(targetFilePath));
+		LOG.info("File(s) will be saved in: {} ", targetFilePath);
 		
 		ExecutorService executor = getExecutorService();
 
@@ -76,9 +76,9 @@ public class Splitter {
 		
 		Integer threadPool = config.getThreadPool()!=null?config.getThreadPool():DEFAULT_THREAD_POOL;
 				
-		ExecutorService executor = new ThreadPoolExecutor(threadPool, 50, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<Runnable>());
+		return new ThreadPoolExecutor(threadPool, 50, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
 		
-		return executor;
+		
 	}
 	
 	private String buildFilePathWithFileAndIndex(String targetFilePath, Integer fileNumber) {

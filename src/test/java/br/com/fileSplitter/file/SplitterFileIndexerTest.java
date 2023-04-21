@@ -13,9 +13,11 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.fileSplitter.file.model.Index;
-import br.com.fileSplitter.file.model.MarkerEnum;
-import br.com.fileSplitter.file.model.Pointer;
+import br.com.filesplitter.file.SplitterFileException;
+import br.com.filesplitter.file.SplitterFileIndexer;
+import br.com.filesplitter.file.model.Index;
+import br.com.filesplitter.file.model.MarkerEnum;
+import br.com.filesplitter.file.model.Pointer;
 
 class SplitterFileIndexerTest {
 

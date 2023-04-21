@@ -10,8 +10,8 @@ import java.io.File;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.fileSplitter.file.SplitterFileException;
-import br.com.fileSplitter.file.util.FileUtils;
+import br.com.filesplitter.file.SplitterFileException;
+import br.com.filesplitter.file.util.FileUtils;
 
 class FileUtilsTest {
 

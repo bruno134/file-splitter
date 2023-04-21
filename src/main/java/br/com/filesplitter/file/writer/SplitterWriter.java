@@ -1,6 +1,6 @@
-package br.com.fileSplitter.file.writer;
+package br.com.filesplitter.file.writer;
 
-import br.com.fileSplitter.file.SplitterFileException;
+import br.com.filesplitter.file.SplitterFileException;
 
 public interface SplitterWriter {
 

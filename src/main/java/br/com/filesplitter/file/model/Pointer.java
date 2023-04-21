@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file.model;
+package br.com.filesplitter.file.model;
 
 public class Pointer {
 

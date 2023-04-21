@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file;
+package br.com.filesplitter.file;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import br.com.fileSplitter.file.model.Index;
-import br.com.fileSplitter.file.model.MarkerEnum;
-import br.com.fileSplitter.file.model.Pointer;
-import br.com.fileSplitter.file.util.FileUtils;
+import br.com.filesplitter.file.model.Index;
+import br.com.filesplitter.file.model.MarkerEnum;
+import br.com.filesplitter.file.model.Pointer;
+import br.com.filesplitter.file.util.FileUtils;
 
 public class SplitterFileIndexer {
 

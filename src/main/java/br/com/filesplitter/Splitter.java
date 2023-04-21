@@ -1,4 +1,4 @@
-package br.com.fileSplitter;
+package br.com.filesplitter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,15 +13,15 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.fileSplitter.file.ProcessorMonitor;
-import br.com.fileSplitter.file.SplitterFileException;
-import br.com.fileSplitter.file.SplitterFileIndexer;
-import br.com.fileSplitter.file.SplitterFileWorker;
-import br.com.fileSplitter.file.model.Index;
-import br.com.fileSplitter.file.model.SplitterFileConfiguration;
-import br.com.fileSplitter.file.reader.RandomBlockFileReader;
-import br.com.fileSplitter.file.util.FileUtils;
-import br.com.fileSplitter.file.writer.SplitterFileWriter;
+import br.com.filesplitter.file.ProcessorMonitor;
+import br.com.filesplitter.file.SplitterFileException;
+import br.com.filesplitter.file.SplitterFileIndexer;
+import br.com.filesplitter.file.SplitterFileWorker;
+import br.com.filesplitter.file.model.Index;
+import br.com.filesplitter.file.model.SplitterFileConfiguration;
+import br.com.filesplitter.file.reader.RandomBlockFileReader;
+import br.com.filesplitter.file.util.FileUtils;
+import br.com.filesplitter.file.writer.SplitterFileWriter;
 
 public class Splitter {
 

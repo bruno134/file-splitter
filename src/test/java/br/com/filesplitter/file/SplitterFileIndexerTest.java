@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file;
+package br.com.filesplitter.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -12,8 +12,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.filesplitter.file.SplitterFileException;
-import br.com.filesplitter.file.SplitterFileIndexer;
 import br.com.filesplitter.file.model.Index;
 import br.com.filesplitter.file.model.MarkerEnum;
 import br.com.filesplitter.file.model.Pointer;
@@ -179,7 +177,7 @@ class SplitterFileIndexerTest {
 			new SplitterFileIndexer(fileName);	
 		});
 
-		assertEquals("A File or filename must be provided", exception.getMessage());
+		assertEquals("Source file can't be null", exception.getMessage());
 
 	}
 
@@ -191,10 +189,11 @@ class SplitterFileIndexerTest {
 		Map<String, MarkerEnum> markers = new HashMap<>();
 		markers.put("@", MarkerEnum.HEADER);
 		markers.put("9", MarkerEnum.TRAILLER);
-		var indexer = new SplitterFileIndexer(sourceFilenameRestricted);
+		
 		
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			indexer.mapIndexes(markers);
+			new SplitterFileIndexer(sourceFilenameRestricted);
+		
 		});
 
 		assertTrue(exception.getMessage().contains("Permission denied"));

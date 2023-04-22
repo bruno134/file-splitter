@@ -27,7 +27,9 @@ public class SplitterFileIndexer {
 
 	public SplitterFileIndexer(String sourceFile) throws SplitterFileException {
 
-		this.sourceFile = FileUtils.createFile(sourceFile);
+		FileUtils.fileValidate(sourceFile);
+		
+		this.sourceFile = new File(sourceFile);
 	}
 
 	public List<Index> mapIndexes(Map<String, MarkerEnum> markers) throws SplitterFileException {

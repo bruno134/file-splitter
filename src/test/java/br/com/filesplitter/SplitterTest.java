@@ -1,4 +1,4 @@
-package br.com.fileSplitter;
+package br.com.filesplitter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.filesplitter.Splitter;
 import br.com.filesplitter.file.SplitterFileException;
 import br.com.filesplitter.file.model.MarkerEnum;
 import br.com.filesplitter.file.model.SplitterFileConfiguration;

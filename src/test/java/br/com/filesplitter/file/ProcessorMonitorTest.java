@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file;
+package br.com.filesplitter.file;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +10,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.junit.jupiter.api.Test;
 
-import br.com.filesplitter.file.ProcessorMonitor;
 import br.com.filesplitter.file.model.Index;
 
 class ProcessorMonitorTest {

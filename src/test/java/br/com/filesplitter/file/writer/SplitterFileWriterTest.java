@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file.writer;
+	package br.com.filesplitter.file.writer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,12 +10,12 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 
 import br.com.filesplitter.file.SplitterFileException;
-import br.com.filesplitter.file.writer.SplitterFileWriter;
+import br.com.filesplitter.file.util.FileUtils;
 
 class SplitterFileWriterTest {
 
 	private final String fileName = "src/test/resources/out/MyTestFile.txt";
-	private final File file = new File(fileName);
+	private File file;
 	private StringBuilder sb;
 	private SplitterFileWriter splitterFileWriter;
 	
@@ -24,11 +24,12 @@ class SplitterFileWriterTest {
 
 	@Test
 	void shouldCreateFileWhenStringBuilderIsGiven() throws SplitterFileException {
-
+		file = FileUtils.createFile(fileName);
 		splitterFileWriter = new SplitterFileWriter(file);
 		sb = new StringBuilder();
 		splitterFileWriter.write(sb);
 		assertTrue(file.exists());
+		delete(file);
 
 	}
 
@@ -47,8 +48,9 @@ class SplitterFileWriterTest {
 	}
 	
 	@Test
-	void shouldRaiseErrorWhenStringBuilderIsNull() {	
+	void shouldRaiseErrorWhenStringBuilderIsNull() throws SplitterFileException {	
 		
+		file = FileUtils.createFile(fileName);
 		splitterFileWriter = new SplitterFileWriter(file);
 		sb = null;
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
@@ -56,6 +58,7 @@ class SplitterFileWriterTest {
 		});
 		
 		assertEquals("StringBuilder cannot be null",exception.getMessage());
+		delete(file);
 
 	}
 	
@@ -71,6 +74,11 @@ class SplitterFileWriterTest {
 		
 		assertNotNull(exception);
 
+	}
+	
+	private void delete(File file) {
+		if(file.exists())
+		   file.delete();
 	}
 	
 }

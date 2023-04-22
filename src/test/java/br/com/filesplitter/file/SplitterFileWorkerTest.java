@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file;
+package br.com.filesplitter.file;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -13,8 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import br.com.filesplitter.file.SplitterFileException;
-import br.com.filesplitter.file.SplitterFileWorker;
 import br.com.filesplitter.file.model.Index;
 import br.com.filesplitter.file.model.Pointer;
 import br.com.filesplitter.file.reader.SplitterReader;

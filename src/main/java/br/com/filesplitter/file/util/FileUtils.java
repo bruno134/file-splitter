@@ -7,6 +7,9 @@ import br.com.filesplitter.file.SplitterFileException;
 
 public class FileUtils {
 
+	private FileUtils() {
+		
+	}
 	
 	public static void fileValidate(File sourceFile) throws SplitterFileException {
 		if (sourceFile == null) {
@@ -20,6 +23,19 @@ public class FileUtils {
 		if (!sourceFile.canRead()) {
 			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
 		}
+		
+	}
+	
+	public static void fileValidate(String sourceFile) throws SplitterFileException {
+		if (sourceFile == null) {
+			throw new SplitterFileException("Source file can't be null");
+		}
+
+		if ("".equals(sourceFile)) {
+			throw new SplitterFileException("Source file can't be blank");
+		}
+		
+		fileValidate(new File(sourceFile));
 		
 	}
 	
@@ -40,11 +56,15 @@ public class FileUtils {
 			// Try to create a folder if it doesn't exists
 			if (!newDirectory.exists()) {
 
-				if (!newDirectory.mkdirs()) {
+				if(!newDirectory.mkdirs()) {
 					throw new SplitterFileException("Could not create path or path invalid");
-				}
-				file.createNewFile();
+				}				
 			}
+			
+			if(!file.createNewFile()) {
+				throw new SplitterFileException("Could not create file");
+			}
+			
 		} catch (IOException e) {
 			throw new SplitterFileException("Could not create path or path invalid");
 		} catch (NullPointerException e) {
@@ -56,7 +76,12 @@ public class FileUtils {
 	
 
 	
-	public static String returnFilePath(String file) {		
+	public static String returnFilePath(String file) throws SplitterFileException{	
+		
+		if(file==null || "".equals(file)) {
+			throw new SplitterFileException("A File or filename must be provided");
+		}
+		
 		return new File(file).getParent();
 	}
 	

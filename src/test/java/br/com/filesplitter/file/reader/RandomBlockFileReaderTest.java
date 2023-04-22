@@ -1,4 +1,4 @@
-package br.com.fileSplitter.file.reader;
+package br.com.filesplitter.file.reader;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import br.com.filesplitter.file.SplitterFileException;
 import br.com.filesplitter.file.model.Index;
 import br.com.filesplitter.file.model.Pointer;
-import br.com.filesplitter.file.reader.RandomBlockFileReader;
 
 class RandomBlockFileReaderTest {
 
@@ -19,7 +18,7 @@ class RandomBlockFileReaderTest {
 	private Index index;
 	private final String originalFilename = "src/test/resources/XS-test-file-1000.txt";
 	private final String originalFilenameRestricted = "src/test/resources/test-file-restrict.txt";
-//	private File originalFile = new File(originalFilename);
+
 	
 
 	@Test

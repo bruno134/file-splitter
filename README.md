@@ -67,7 +67,7 @@ CONTENTINFILE
 ## Configuration Class
 ``withMarkers(Map<String, MarkerEnum> markers)`` - Define what are the file markers that represents a unique file result.
 
-``withOutputFileName(String outputFileName)`` - Define the name of resulting output file(s). Default name is "splitted_file"
+``withOutputFileName(String outputFileName)`` - Define the name of resulting output file(s). Default file name is "splitted_file"
 
 ``withOutputFileExtension(String outputFileExtension)`` - Define the extension of resulting output file(s). Default extension is ".txt"
 

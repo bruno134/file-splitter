@@ -54,7 +54,6 @@ File 1 content:
 CONTENTINFILE
 CONTENTINFILE
 9FOOFOOTFOOTF
-
 ```
 
 File 2 content:

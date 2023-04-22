@@ -45,7 +45,7 @@ SplitterFileConfiguration config = SplitterFileConfiguration.builder()
 ```java
 new Splitter(config).splitAndWrite(sourceFilename, destinationPath);
 ```
-4 - The result is two splitted file, available in informed destination path
+4 - The result is two split files, available at the specified destination path.
 
 File 1 content:
 

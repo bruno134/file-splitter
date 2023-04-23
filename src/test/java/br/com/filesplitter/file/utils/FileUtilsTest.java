@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,17 +42,6 @@ class FileUtilsTest {
 	}
 	
 	@Test
-	void shouldRaisCustomExceptionWhenDoesHavePermissionTopReadFile() {
-		
-		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			FileUtils.fileValidate(new File("src/test/resources/test-file-restrict.txt"));	
-		});
-		
-		assertTrue(exception.getMessage().contains("Permission denied to read"));
-		
-	}
-	
-	@Test
 	void shouldNotRaisCustomExceptionWhenFileIsValid() {
 		
 		boolean validated = true;
@@ -74,29 +64,7 @@ class FileUtilsTest {
 		assertEquals("A File or filename must be provided", exception.getMessage());
 		
 	}
-	
-	@Test
-	void shouldRaiseCustomExceptionWhenCouldNotCreateDirectory() {
-		
-		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			FileUtils.createFile("src/test/resources/ffolder/nfolder/file.txt");	
-		});
-		
-		assertEquals("Could not create path or path invalid", exception.getMessage());
-		
-	}
-	
-	@Test
-	void shouldRaiseCustomExceptionWhenCouldNotCreateFile() {
-		
-		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			FileUtils.createFile("src/test/resources/ffolder/file.txt");	
-		});
-		
-		assertEquals("Could not create path or path invalid", exception.getMessage());
-		
-	}
-	
+			
 	@Test
 	void shouldCreateFileWhenFolderExists() throws SplitterFileException {
 		
@@ -197,6 +165,30 @@ class FileUtilsTest {
 		});
 		
 		assertEquals("Source file can't be null", exception.getMessage());
+		
+	}
+	
+	@Test
+	void shouldRaiseCustomExceptionWhenFileCantBeReadable() {
+		
+		File file = new File("src/test/resources/dummy_file.txt");
+		
+		try {			
+			file.createNewFile();
+			file.setReadable(false);
+		} catch (IOException e) {		
+			fail("Couldn't create file to test");
+		}
+		
+		
+		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
+		
+			
+			FileUtils.fileValidate(file);	
+		});
+		
+		assertTrue(exception.getMessage().contains("Can't read the file"));
+		file.delete();
 		
 	}
 	

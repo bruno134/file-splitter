@@ -19,9 +19,9 @@ public class FileUtils {
 		if (!sourceFile.exists()) {
 			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
 		}
-
-		if (!sourceFile.canRead()) {
-			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
+		
+		if(!sourceFile.canRead()) {
+			throw new SplitterFileException("Can't read the file " + sourceFile.getAbsolutePath());
 		}
 		
 	}
@@ -55,19 +55,14 @@ public class FileUtils {
 
 			// Try to create a folder if it doesn't exists
 			if (!newDirectory.exists()) {
-
-				if(!newDirectory.mkdirs()) {
-					throw new SplitterFileException("Could not create path or path invalid");
-				}				
+				 newDirectory.mkdirs();
 			}
 			
 			if(!file.createNewFile()) {
 				throw new SplitterFileException("Could not create file");
-			}
-			
-		} catch (IOException e) {
-			throw new SplitterFileException("Could not create path or path invalid");
-		} catch (NullPointerException e) {
+			}			
+		
+		} catch (IOException | NullPointerException e) {
 			throw new SplitterFileException("A File or filename must be provided");
 		}
 

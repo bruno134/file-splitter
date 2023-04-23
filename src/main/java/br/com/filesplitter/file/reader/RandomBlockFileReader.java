@@ -1,12 +1,12 @@
 package br.com.filesplitter.file.reader;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import br.com.filesplitter.file.SplitterFileException;
 import br.com.filesplitter.file.model.Index;
+import br.com.filesplitter.file.util.FileUtils;
 
 public class RandomBlockFileReader implements SplitterReader{
 
@@ -20,17 +20,7 @@ public class RandomBlockFileReader implements SplitterReader{
 	@Override
 	public StringBuilder read(Index index) throws SplitterFileException {
 		
-		if (sourceFile==null) {
-			throw new SplitterFileException("Source file cannot be null");
-		}
-		
-		if (!sourceFile.exists()) {
-			throw new SplitterFileException(sourceFile.getAbsolutePath() + " was not found in the given path");
-		}
-		
-		if(!sourceFile.canRead()) {
-			throw new SplitterFileException("Permission denied to read " + sourceFile.getAbsolutePath());
-		}
+		FileUtils.fileValidate(sourceFile);
 		
 		if(index==null)
 			throw new SplitterFileException("Index was not provided");

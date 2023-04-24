@@ -36,6 +36,13 @@
 			<artifactId>hamcrest-core</artifactId>
 			<version>2.2</version>
 		</dependency>
+		
+		<dependency>
+		    <groupId>org.jacoco</groupId>
+		    <artifactId>jacoco-maven-plugin</artifactId>
+		    <version>0.8.9</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -56,6 +63,63 @@
 					</additionalClasspathElements>
 				</configuration>
 			</plugin>
+			
+			<plugin>
+			  <groupId>org.jacoco</groupId>
+			  <artifactId>jacoco-maven-plugin</artifactId>
+			  <version>0.8.6</version>
+			  <executions>
+			  	<execution>
+			      	<id>prepare-agent</id>
+			            <goals>
+			            		<goal>prepare-agent</goal>
+			            </goals>
+			      </execution>
+			      <execution>
+			            <id>report</id>
+			            <phase>test</phase>
+			               <goals>
+			               	<goal>report</goal>
+			               </goals>
+			        </execution>
+			    </executions>
+			 </plugin>
 		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+		  <id>coverage</id>
+		  <build>
+		   <plugins>
+		    <plugin>
+		      <groupId>org.jacoco</groupId>
+		     <artifactId>jacoco-maven-plugin</artifactId>
+		      <version>0.8.9</version>
+		      <executions>
+		        <execution>
+		          <id>prepare-agent</id>
+		          <goals>
+		            <goal>prepare-agent</goal>
+		          </goals>
+		        </execution>
+		        <execution>
+		          <id>report</id>
+		          <goals>
+		            <goal>report</goal>
+		          </goals>
+		          <configuration>
+		            <formats>
+		              <format>XML</format>
+		            </formats>
+		          </configuration>
+		        </execution>
+		      </executions>
+		    </plugin>
+		   </plugins>
+		  </build>
+		</profile>
+	</profiles>
+		
+	
 </project>

@@ -150,11 +150,11 @@ class SplitterFileIndexerTest {
 
 		File nonreadableFile = FileUtils.createFile("src/test/resources/anyFile.txt");
 
-		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			SplitterFileIndexer indexer = new SplitterFileIndexer(nonreadableFile);
-			nonreadableFile.setReadable(false);
-			indexer.mapIndexes(markers);
+		SplitterFileIndexer indexer = new SplitterFileIndexer(nonreadableFile);
+		nonreadableFile.setReadable(false);
 
+		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
+			indexer.mapIndexes(markers);
 		});
 
 		assertTrue(exception.getMessage().contains("Permission denied"));

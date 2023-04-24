@@ -1,4 +1,8 @@
 # file-splitter
+![Java CI with Maven](https://github.com/bruno134/file-splitter/workflows/Java%20CI%20with%20Maven/badge.svg?branch=main)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bruno134_file-splitter&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bruno134_file-splitter)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=bruno134_file-splitter&metric=coverage)](https://sonarcloud.io/summary/new_code?id=bruno134_file-splitter)
+
 This Java project breaks a large file into smaller files, based on predefined headers and traillers.
 
 ### **WARNING**: This version only works when all lines of the file has same size **(FIXED BLOCK)**

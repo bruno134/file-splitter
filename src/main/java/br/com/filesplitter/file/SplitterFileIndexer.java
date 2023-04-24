@@ -94,7 +94,8 @@ public class SplitterFileIndexer {
 					indexTrailler[1] = 0;
 				}
 
-				reader.seek(pointerPosition += lineSize);
+				pointerPosition += lineSize;
+				reader.seek(pointerPosition);
 				charReaded = reader.read();
 				linePosition++;
 			}

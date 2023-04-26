@@ -15,6 +15,9 @@ import br.com.filesplitter.file.model.SplitterFileConfiguration;
 
 class SplitterTest {
 
+	private static final String TXT_EXTENSION = ".txt";
+	private static final String SPLITTED_FILE = "splitted_file";
+	private static final String TEST_FILE = "test_file";
 	private static final String SOURCE_FILE = "src/test/resources/XS-test-file-1000.txt";
 	private static final String TARGET_PATH = "src/test/resources/unit-tests";
 	
@@ -25,7 +28,7 @@ class SplitterTest {
 		markers.put("@", MarkerEnum.HEADER);
 		markers.put("9", MarkerEnum.TRAILLER);
 		
-		String fileName = "test_file";
+		String fileName = TEST_FILE;
 		
 		SplitterFileConfiguration config = SplitterFileConfiguration.builder(markers)
 				.withOutputFileName(fileName)
@@ -39,7 +42,7 @@ class SplitterTest {
 		
 		assertTrue(testPath.exists());
 		assertEquals(4, files.length);
-		assertTrue(files[0].endsWith(".txt"));
+		assertTrue(files[0].endsWith(TXT_EXTENSION));
 		assertTrue(files[0].startsWith(fileName));
 
 		deleteFile(testPath);
@@ -53,7 +56,7 @@ class SplitterTest {
 		markers.put("@", MarkerEnum.HEADER);
 		markers.put("9", MarkerEnum.TRAILLER);
 		
-		String fileName = "test_file";
+		String fileName = TEST_FILE;
 		String extension = ".dat";
 		
 		SplitterFileConfiguration config = SplitterFileConfiguration.builder(markers)
@@ -84,7 +87,7 @@ class SplitterTest {
 		markers.put("@", MarkerEnum.HEADER);
 		markers.put("9", MarkerEnum.TRAILLER);
 				
-		String extension = ".txt";
+		String extension = TXT_EXTENSION;
 		
 		SplitterFileConfiguration config = SplitterFileConfiguration.builder(markers)				
 				.withOutputFileExtension(extension)				
@@ -99,7 +102,7 @@ class SplitterTest {
 		assertTrue(testPath.exists());
 		assertEquals(4, files.length);
 		assertTrue(files[0].endsWith(extension));
-		assertTrue(files[0].startsWith("splitted_file"));
+		assertTrue(files[0].startsWith(SPLITTED_FILE));
 		
 		deleteFile(testPath);
 		
@@ -126,8 +129,8 @@ class SplitterTest {
 		
 		assertTrue(testPath.exists());
 		assertEquals(4, files.length);
-		assertTrue(files[0].endsWith(".txt"));
-		assertTrue(files[0].startsWith("splitted_file"));
+		assertTrue(files[0].endsWith(TXT_EXTENSION));
+		assertTrue(files[0].startsWith(SPLITTED_FILE));
 		
 		deleteFile(testPath);
 		
@@ -140,7 +143,7 @@ class SplitterTest {
 		markers.put("@", MarkerEnum.HEADER);
 		markers.put("9", MarkerEnum.TRAILLER);
 		
-		String fileName = "test_file";
+		String fileName = TEST_FILE;
 		
 		SplitterFileConfiguration config = SplitterFileConfiguration.builder(markers)
 				.withOutputFileName(fileName)
@@ -155,7 +158,7 @@ class SplitterTest {
 		
 		assertTrue(testPath.exists());
 		assertEquals(4, files.length);
-		assertTrue(files[0].endsWith(".txt"));
+		assertTrue(files[0].endsWith(TXT_EXTENSION));
 		assertTrue(files[0].startsWith(fileName));
 
 		deleteFile(testPath);
@@ -182,8 +185,8 @@ class SplitterTest {
 		
 		assertTrue(testPath.exists());
 		assertEquals(4, files.length);
-		assertTrue(files[0].endsWith(".txt"));
-		assertTrue(files[0].startsWith("splitted_file"));
+		assertTrue(files[0].endsWith(TXT_EXTENSION));
+		assertTrue(files[0].startsWith(SPLITTED_FILE));
 		
 		deleteFile(testPath);
 		

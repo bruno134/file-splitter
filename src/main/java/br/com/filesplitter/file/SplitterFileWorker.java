@@ -6,6 +6,8 @@ import br.com.filesplitter.file.writer.SplitterWriter;
 
 public class SplitterFileWorker implements Runnable {
 
+	public static final String READER_MUST_BE_DEFINED = "Reader must be defined";
+	public static final String WRITER_MUST_BE_DEFINED = "Writer must be defined";
 	private SplitterReader splitterReader;
 	private SplitterWriter splitterWriter;
 	private Index index;
@@ -29,10 +31,10 @@ public class SplitterFileWorker implements Runnable {
 	public void readIndexesFromQueue() throws SplitterFileException {
 
 		if (splitterWriter == null)
-			throw new SplitterFileException("Writer must be defined");
+			throw new SplitterFileException(WRITER_MUST_BE_DEFINED);
 
 		if (splitterReader == null)
-			throw new SplitterFileException("Reader must be defined");
+			throw new SplitterFileException(READER_MUST_BE_DEFINED);
 
 		StringBuilder fileInput;
 

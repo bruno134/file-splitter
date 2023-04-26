@@ -17,6 +17,16 @@ import br.com.filesplitter.file.util.FileUtils;
 class FileUtilsTest {
 
 	
+	private static final String COULDN_T_CREATE_FILE_TO_TEST = "Couldn't create file to test";
+	private static final String CAN_T_READ_THE_FILE = "Can't read the file";
+	private static final String DUMMY_FILE_TXT = "src/test/resources/dummy_file.txt";
+	private static final String FOLDER_RESOURCES = "src/test/resources";
+	private static final String COULD_NOT_CREATE_FILE = "Could not create file";
+	private static final String FILE_TXT = "src/test/resources/file.txt";
+	private static final String NEW_FOLDER_FILE_TXT = "src/test/resources/newFolder/file.txt";
+	private static final String XS_TEST_FILE_1000_TXT = "src/test/resources/XS-test-file-1000.txt";
+	private static final String ANYFILE_TXT = "anyfile.txt";
+
 	@Test
 	void shouldRaisCustomExceptionWhenValidateFileIsNull() {
 		
@@ -26,7 +36,7 @@ class FileUtilsTest {
 			FileUtils.fileValidate(file);	
 		});
 		
-		assertEquals("Source file can't be null", exception.getMessage());
+		assertEquals(FileUtils.SOURCE_FILE_CAN_T_BE_NULL, exception.getMessage());
 		
 	}
 	
@@ -34,10 +44,10 @@ class FileUtilsTest {
 	void shouldRaisCustomExceptionWhenValidateFileDoesNotExists() {
 		
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			FileUtils.fileValidate(new File("anyfile.txt"));	
+			FileUtils.fileValidate(new File(ANYFILE_TXT));	
 		});
 		
-		assertTrue(exception.getMessage().contains("was not found in the given path"));
+		assertTrue(exception.getMessage().contains(FileUtils.WAS_NOT_FOUND_IN_THE_GIVEN_PATH));
 		
 	}
 	
@@ -46,7 +56,7 @@ class FileUtilsTest {
 		
 		boolean validated = true;
 		try {
-			FileUtils.fileValidate(new File("src/test/resources/XS-test-file-1000.txt"));
+			FileUtils.fileValidate(new File(XS_TEST_FILE_1000_TXT));
 		} catch (SplitterFileException e) {
 			validated = false;
 		}	
@@ -61,14 +71,14 @@ class FileUtilsTest {
 			FileUtils.createFile(null);	
 		});
 		
-		assertEquals("A File or filename must be provided", exception.getMessage());
+		assertEquals(FileUtils.A_FILE_OR_FILENAME_MUST_BE_PROVIDED, exception.getMessage());
 		
 	}
 			
 	@Test
 	void shouldCreateFileWhenFolderExists() throws SplitterFileException {
 		
-		File createdFile = FileUtils.createFile("src/test/resources/file.txt");	
+		File createdFile = FileUtils.createFile(FILE_TXT);	
 		
 		assertTrue(createdFile.exists());
 		createdFile.delete();
@@ -77,7 +87,7 @@ class FileUtilsTest {
 	@Test
 	void shouldCreateFileWhenFolderDoesNotExists() throws SplitterFileException {
 		
-		File createdFile = FileUtils.createFile("src/test/resources/newFolder/file.txt");	
+		File createdFile = FileUtils.createFile(NEW_FOLDER_FILE_TXT);	
 		
 		assertTrue(createdFile.exists());
 		createdFile.delete();
@@ -89,13 +99,13 @@ class FileUtilsTest {
 	void shouldRaiseCustomExceptionWhenItsAlreadyExists() throws SplitterFileException, IOException {
 		
 		
-		File alreadyExistsFile = FileUtils.createFile("src/test/resources/newFolder/file.txt");	
+		File alreadyExistsFile = FileUtils.createFile(NEW_FOLDER_FILE_TXT);	
 				
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {
-			 FileUtils.createFile("src/test/resources/newFolder/file.txt");	
+			 FileUtils.createFile(NEW_FOLDER_FILE_TXT);	
 		});
 				
-		assertEquals("Could not create file", exception.getMessage());
+		assertEquals(COULD_NOT_CREATE_FILE, exception.getMessage());
 		
 		alreadyExistsFile.delete();
 		new File(alreadyExistsFile.getParent()).delete();
@@ -105,10 +115,10 @@ class FileUtilsTest {
 	@Test
 	void shouldReturnFilePath() throws SplitterFileException {
 		
-		String path = FileUtils.returnFilePath("src/test/resources/XS-test-file-1000.txt");
+		String path = FileUtils.returnFilePath(XS_TEST_FILE_1000_TXT);
 
 		assertNotEquals("", path);
-		assertTrue(path.contains("src/test/resources"));
+		assertTrue(path.contains(FOLDER_RESOURCES));
 		
 	}
 	
@@ -119,7 +129,7 @@ class FileUtilsTest {
 			FileUtils.returnFilePath(null);	
 		});
 		
-		assertEquals("A File or filename must be provided", exception.getMessage());
+		assertEquals(FileUtils.A_FILE_OR_FILENAME_MUST_BE_PROVIDED, exception.getMessage());
 		
 	}
 	
@@ -130,7 +140,7 @@ class FileUtilsTest {
 			FileUtils.returnFilePath("");	
 		});
 		
-		assertEquals("A File or filename must be provided", exception.getMessage());
+		assertEquals(FileUtils.A_FILE_OR_FILENAME_MUST_BE_PROVIDED, exception.getMessage());
 		
 	}
 	
@@ -141,7 +151,7 @@ class FileUtilsTest {
 			FileUtils.createFile("");	
 		});
 		
-		assertEquals("A File or filename must be provided", exception.getMessage());
+		assertEquals(FileUtils.A_FILE_OR_FILENAME_MUST_BE_PROVIDED, exception.getMessage());
 		
 	}
 	
@@ -152,7 +162,7 @@ class FileUtilsTest {
 			FileUtils.fileValidate("");	
 		});
 		
-		assertEquals("Source file can't be blank", exception.getMessage());
+		assertEquals(FileUtils.SOURCE_FILE_CAN_T_BE_BLANK, exception.getMessage());
 		
 	}
 	
@@ -164,20 +174,20 @@ class FileUtilsTest {
 			FileUtils.fileValidate(file);	
 		});
 		
-		assertEquals("Source file can't be null", exception.getMessage());
+		assertEquals(FileUtils.SOURCE_FILE_CAN_T_BE_NULL, exception.getMessage());
 		
 	}
 	
 	@Test
 	void shouldRaiseCustomExceptionWhenFileCantBeReadable() {
 		
-		File file = new File("src/test/resources/dummy_file.txt");
+		File file = new File(DUMMY_FILE_TXT);
 		
 		try {			
 			file.createNewFile();
 			file.setReadable(false);
 		} catch (IOException e) {		
-			fail("Couldn't create file to test");
+			fail(COULDN_T_CREATE_FILE_TO_TEST);
 		}
 		
 		
@@ -187,7 +197,7 @@ class FileUtilsTest {
 			FileUtils.fileValidate(file);	
 		});
 		
-		assertTrue(exception.getMessage().contains("Can't read the file"));
+		assertTrue(exception.getMessage().contains(CAN_T_READ_THE_FILE));
 		file.delete();
 		
 	}
@@ -198,7 +208,7 @@ class FileUtilsTest {
 		SplitterFileException exception = null;
 
 		try {
-			String file = "src/test/resources/XS-test-file-1000.txt";
+			String file = XS_TEST_FILE_1000_TXT;
 			FileUtils.fileValidate(file);
 		} catch (SplitterFileException e) {
 			exception = e;

@@ -14,6 +14,7 @@ import br.com.filesplitter.file.util.FileUtils;
 
 public class SplitterFileIndexer {
 
+	public static final String THE_MARKERS_SHOULD_BE_PROVIDED = "The markers should be provided";
 	private static final String READ = "r";
 	private final File sourceFile;
 
@@ -34,7 +35,7 @@ public class SplitterFileIndexer {
 	public List<Index> mapIndexes(Map<String, MarkerEnum> markers) throws SplitterFileException {
 
 		if(markers==null)
-			throw new SplitterFileException("The markers should be provided");
+			throw new SplitterFileException(THE_MARKERS_SHOULD_BE_PROVIDED);
 		
 		List<Index> indexes = new ArrayList<>();
 		int fileCount = 0;

@@ -93,7 +93,7 @@ class SplitterFileIndexerTest {
 		});
 
 		assertNotNull(exception);
-		assertEquals("The markers should be provided", exception.getMessage());
+		assertEquals(SplitterFileIndexer.THE_MARKERS_SHOULD_BE_PROVIDED, exception.getMessage());
 	}
 
 	@Test

@@ -10,6 +10,7 @@ import br.com.filesplitter.file.util.FileUtils;
 
 public class RandomBlockFileReader implements SplitterReader{
 
+	public static final String INDEX_WAS_NOT_PROVIDED = "Index was not provided";
 	private static final String READ = "r";	
 	private final File sourceFile;
 	
@@ -23,7 +24,7 @@ public class RandomBlockFileReader implements SplitterReader{
 		FileUtils.fileValidate(sourceFile);
 		
 		if(index==null)
-			throw new SplitterFileException("Index was not provided");
+			throw new SplitterFileException(INDEX_WAS_NOT_PROVIDED);
 		
 		StringBuilder contentFile = new StringBuilder();
 

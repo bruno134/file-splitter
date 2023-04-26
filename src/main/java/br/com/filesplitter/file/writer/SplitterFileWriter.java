@@ -9,6 +9,8 @@ import br.com.filesplitter.file.SplitterFileException;
 
 public class SplitterFileWriter implements SplitterWriter{
 	
+	public static final String TARGET_FILE_NOT_PROVIDED = "Target File not provided";
+	public static final String STRING_BUILDER_CANNOT_BE_NULL = "StringBuilder cannot be null";
 	private File targetFile;
 	
 	
@@ -36,10 +38,10 @@ public class SplitterFileWriter implements SplitterWriter{
 	private String validateInputs(StringBuilder stringBuilder) {
 
 		if (targetFile == null)
-			return "Target File not provided";
+			return TARGET_FILE_NOT_PROVIDED;
 
 		if (stringBuilder == null)
-			return "StringBuilder cannot be null";
+			return STRING_BUILDER_CANNOT_BE_NULL;
 
 		return null;
 

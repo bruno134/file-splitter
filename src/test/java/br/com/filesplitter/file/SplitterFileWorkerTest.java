@@ -22,6 +22,8 @@ import br.com.filesplitter.file.writer.SplitterWriter;
 
 class SplitterFileWorkerTest {
 
+	private static final String MOCK_CONTENT = "@@HEADER999TRAILLER";
+	private static final String SRC_TEST_RESOURCES_WORKER_FILE_TXT = "src/test/resources/workerFile.txt";
 	private final FakeWriter writer = new FakeWriter();
 	private final FakeReader reader = new FakeReader();
 	private final Pointer pointer = new Pointer(0,1);
@@ -30,7 +32,7 @@ class SplitterFileWorkerTest {
 	@Test
 	void shouldReadAndWrite() throws SplitterFileException, IOException {
 		
-		File targetFile = FileUtils.createFile("src/test/resources/workerFile.txt");
+		File targetFile = FileUtils.createFile(SRC_TEST_RESOURCES_WORKER_FILE_TXT);
 		SplitterFileWriter writer = new SplitterFileWriter(targetFile);
 		
 		SplitterFileWorker worker =  new SplitterFileWorker(writer, reader, index);
@@ -43,7 +45,7 @@ class SplitterFileWorkerTest {
 	    String currentLine = reader.readLine();
 	    reader.close();
 		
-	    assertEquals("@@HEADER999TRAILLER", currentLine);
+	    assertEquals(MOCK_CONTENT, currentLine);
 	    targetFile.delete();
 	}
 	
@@ -57,7 +59,7 @@ class SplitterFileWorkerTest {
 			worker.readIndexesFromQueue();	
 		});
 
-		assertEquals("Reader must be defined", exception.getMessage());
+		assertEquals(SplitterFileWorker.READER_MUST_BE_DEFINED, exception.getMessage());
 		
 	}
 	
@@ -71,7 +73,7 @@ class SplitterFileWorkerTest {
 			worker.readIndexesFromQueue();	
 		});
 
-		assertEquals("Writer must be defined", exception.getMessage());
+		assertEquals(SplitterFileWorker.WRITER_MUST_BE_DEFINED, exception.getMessage());
 		
 	}
 	
@@ -84,7 +86,7 @@ class SplitterFileWorkerTest {
 
 		@Override
 		public StringBuilder read(Index index) throws SplitterFileException {
-			return new StringBuilder("@@HEADER999TRAILLER");
+			return new StringBuilder(MOCK_CONTENT);
 		}
 		
 	}

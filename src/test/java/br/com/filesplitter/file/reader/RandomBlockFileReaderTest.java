@@ -47,7 +47,7 @@ class RandomBlockFileReaderTest {
 			reader.read(index);
 		});
 
-		assertEquals("Index was not provided", readerException.getMessage());
+		assertEquals(RandomBlockFileReader.INDEX_WAS_NOT_PROVIDED, readerException.getMessage());
 
 	}
 }

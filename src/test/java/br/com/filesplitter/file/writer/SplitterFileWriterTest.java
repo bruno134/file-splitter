@@ -14,6 +14,7 @@ import br.com.filesplitter.file.util.FileUtils;
 
 class SplitterFileWriterTest {
 
+	private static final String ANY_TXT = "/anything/any.txt";
 	private final String fileName = "src/test/resources/out/MyTestFile.txt";
 	private File file;
 	private StringBuilder sb;
@@ -43,7 +44,7 @@ class SplitterFileWriterTest {
 			splitterFileWriter.write(sb);
 		});
 		
-		assertEquals("Target File not provided",exception.getMessage());
+		assertEquals(SplitterFileWriter.TARGET_FILE_NOT_PROVIDED,exception.getMessage());
 
 	}
 	
@@ -57,7 +58,7 @@ class SplitterFileWriterTest {
 			splitterFileWriter.write(sb);
 		});
 		
-		assertEquals("StringBuilder cannot be null",exception.getMessage());
+		assertEquals(SplitterFileWriter.STRING_BUILDER_CANNOT_BE_NULL,exception.getMessage());
 		delete(file);
 
 	}
@@ -65,7 +66,7 @@ class SplitterFileWriterTest {
 	@Test
 	void shouldRaiseIOExceptionWhenPathDoesNotExists() {	
 		
-		File newFile = new File("/anything/any.txt");
+		File newFile = new File(ANY_TXT);
 		splitterFileWriter = new SplitterFileWriter(newFile);
 		sb = new StringBuilder();
 		SplitterFileException exception = assertThrows(SplitterFileException.class, () -> {

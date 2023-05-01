@@ -1,6 +1,7 @@
 package br.com.filesplitter.file;
 
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -64,6 +65,16 @@ private final ExecutorService executor;
 		} catch (NullPointerException |InterruptedException e) {
 			 Thread.currentThread().interrupt();
 		}
+	}
+
+	public Callable<Boolean> isTerminated(){
+
+		if(executor!=null)
+			return () -> Boolean.valueOf(executor.isTerminated());
+		else
+			return () -> Boolean.valueOf(true);
+
+		
 	}
 
 }

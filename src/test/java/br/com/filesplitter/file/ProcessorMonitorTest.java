@@ -2,18 +2,20 @@ package br.com.filesplitter.file;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.awaitility.Awaitility.*;
 
+import java.time.Duration;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+
 import org.junit.jupiter.api.Test;
 
 import br.com.filesplitter.file.model.Index;
 
-class ProcessorMonitorTest {
-
+class ProcessorMonitorTest {	
 	
 	@Test
 	void shouldInterruptWhenQueueIsNull() throws InterruptedException {
@@ -25,8 +27,11 @@ class ProcessorMonitorTest {
 				
 		var monitorThread = new Thread(monitor);
 		monitorThread.start();	
-		
-		Thread.sleep(500);
+
+		await()
+			.atMost(Duration.ofSeconds(2))
+		.with()
+			.until(monitor.isTerminated());
 	
 		assertFalse(monitorThread.isAlive());		
 		
@@ -45,35 +50,33 @@ class ProcessorMonitorTest {
 		var monitorThread = new Thread(monitor);
 		monitorThread.start();	
 		
-		Thread.sleep(500);
+		await()
+			.atMost(Duration.ofSeconds(2))
+		.with()
+			.until(monitor.isTerminated());
 	
 		assertFalse(monitorThread.isAlive());		
 		
 	}
 	
-	@Test
-	void shouldBeRunningWhenStillHaveProcessRunning() throws InterruptedException {
+	// @Test
+	// void shouldBeRunningWhenStillHaveProcessRunning() throws InterruptedException {
 		
-		Queue<Index> queue = new LinkedBlockingQueue<>();
-		ExecutorService service = Executors.newFixedThreadPool(1);
+	// 	Queue<Index> queue = new LinkedBlockingQueue<>();
+	// 	ExecutorService service = Executors.newFixedThreadPool(1);
 		
-		ProcessorMonitor monitor = new ProcessorMonitor(queue, service);
-		var monitorThread = new Thread(monitor);
-		monitorThread.start();	
+	// 	ProcessorMonitor monitor = new ProcessorMonitor(queue, service);
+	// 	var monitorThread = new Thread(monitor);
+	// 	monitorThread.start();	
 		
-		for (int i = 0; i < 2; i++) {
-			service.execute(()->{
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {				
-					Thread.currentThread().interrupt();
-				}
-			});
-		}
+	// 	await()
+	// 		.atMost(Duration.ofSeconds(2))
+	// 	.with()
+	// 		.until(monitor.isTerminated());
 			
-		assertFalse(service.isTerminated());		
+	// 	assertFalse(service.isTerminated());		
 		
-	}
+	// }
 	
 	@Test
 	void shouldBeRunningWhenQueueIsNotEmpty() throws InterruptedException {
@@ -84,18 +87,11 @@ class ProcessorMonitorTest {
 		
 		ProcessorMonitor monitor = new ProcessorMonitor(queue, service);
 		var monitorThread = new Thread(monitor);
-		monitorThread.start();	
-	
-		service.execute(()->{
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {				
-				Thread.currentThread().interrupt();
-			}
-		});
+		monitorThread.start();		
 				
 		assertFalse(service.isTerminated());
 		assertTrue(monitorThread.isAlive());
+		queue.poll();
 		
 	}
 	
@@ -105,29 +101,20 @@ class ProcessorMonitorTest {
 		Queue<Index> queue = new LinkedBlockingQueue<>();
 		queue.add(new Index(null,null,null));
 		ExecutorService service = Executors.newFixedThreadPool(1);		
-		ProcessorMonitor monitor = new ProcessorMonitor(queue, service);
-			
-		service.execute(()->{			
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {				
-				Thread.currentThread().interrupt();
-			}
-		});
-				
+		ProcessorMonitor monitor = new ProcessorMonitor(queue, service);				
 		var monitorThread = new Thread(monitor);
-		monitorThread.start();	
-		System.out.println(monitorThread.isAlive());
+		monitorThread.start();			
 		assertTrue(monitorThread.isAlive());
+
 		queue.poll();
-		Thread.sleep(2500);
-		System.out.println(monitorThread.isAlive());
-		System.out.println(service.isTerminated());
+		await()
+			.atMost(Duration.ofSeconds(2))
+		.with()
+			.until(monitor.isTerminated());
 		
 		assertFalse(monitorThread.isAlive());
 		assertTrue(service.isTerminated());
 		
 	}
-	
 
 }

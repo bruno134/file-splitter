@@ -1,6 +1,7 @@
 package br.com.filesplitter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -46,6 +47,7 @@ class SplitterTest {
 		assertTrue(files[0].startsWith(fileName));
 
 		deleteFile(testPath);
+		assertFalse(testPath.exists());
 	}
 	
 	@Test
@@ -76,7 +78,7 @@ class SplitterTest {
 		assertTrue(files[0].startsWith(fileName));
 		
 		deleteFile(testPath);
-		
+		assertFalse(testPath.exists());	
 	}
 	
 	@Test
@@ -105,9 +107,6 @@ class SplitterTest {
 		assertTrue(files[0].startsWith(SPLITTED_FILE));
 		
 		deleteFile(testPath);
-		
-		
-
 	}
 	
 	@Test
@@ -133,7 +132,7 @@ class SplitterTest {
 		assertTrue(files[0].startsWith(SPLITTED_FILE));
 		
 		deleteFile(testPath);
-		
+		assertFalse(testPath.exists());
 	}
 	
 	@Test
@@ -162,6 +161,7 @@ class SplitterTest {
 		assertTrue(files[0].startsWith(fileName));
 
 		deleteFile(testPath);
+		assertFalse(testPath.exists());
 	}
 	
 	@Test
@@ -189,18 +189,19 @@ class SplitterTest {
 		assertTrue(files[0].startsWith(SPLITTED_FILE));
 		
 		deleteFile(testPath);
+		assertFalse(testPath.exists());
 		
 	}
 	
 	private void deleteFile(File file) {
 		
+
 		try {
 			Thread.sleep(100);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+		} catch (InterruptedException e) {			
 			e.printStackTrace();
 		}
-		
+
 		var files = file.list();
 		
 		for (int i = 0; i < files.length; i++) {
@@ -208,11 +209,9 @@ class SplitterTest {
 			File newFile = new File(file.getPath() + "/" + files[i]);
 			
 			if((newFile.exists())) {
-//				System.out.println(newFile.getName());
 				newFile.delete();
 			}
 		}		
 		file.delete();		
 	}
-
 }

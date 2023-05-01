@@ -195,6 +195,13 @@ class SplitterTest {
 	
 	private void deleteFile(File file) {
 		
+
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {			
+			e.printStackTrace();
+		}
+
 		var files = file.list();
 		
 		for (int i = 0; i < files.length; i++) {
